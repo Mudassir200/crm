@@ -1,0 +1,50 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-01-28 12:23:09.737809",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "propety",
+  "propety_name",
+  "price"
+ ],
+ "fields": [
+  {
+   "fieldname": "propety",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Propety",
+   "options": "Realestate Property"
+  },
+  {
+   "fetch_from": "propety.land_price",
+   "fieldname": "price",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Price",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "propety.property_name",
+   "fieldname": "propety_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Propety Name",
+   "read_only": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2025-01-28 14:54:13.791867",
+ "modified_by": "Administrator",
+ "module": "FCRM",
+ "name": "CRM Deal Propety",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
