@@ -656,9 +656,12 @@ const activities = computed(() => {
       })
     }
   })
-  return sortByCreation(_activities)
+  return sortByCreationDesc(_activities)
 })
 
+function sortByCreationDesc(list) {
+  return list.sort((a, b) => new Date(b.creation) - new Date(a.creation))
+}
 function sortByCreation(list) {
   return list.sort((a, b) => new Date(a.creation) - new Date(b.creation))
 }

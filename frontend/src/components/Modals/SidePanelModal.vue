@@ -76,6 +76,10 @@ const props = defineProps({
     type: String,
     default: 'CRM Lead',
   },
+  type: {
+    type: String,
+    default: 'Side Panel',
+  },
 })
 
 const emit = defineEmits(['reload'])
@@ -88,7 +92,7 @@ const preview = ref(false)
 const data = ref({})
 
 function getParams() {
-  return { doctype: _doctype.value, type: 'Side Panel' }
+  return { doctype: _doctype.value, type: props.type }
 }
 
 const tabs = createResource({
@@ -136,7 +140,7 @@ function saveChanges() {
     'crm.fcrm.doctype.crm_fields_layout.crm_fields_layout.save_fields_layout',
     {
       doctype: _doctype.value,
-      type: 'Side Panel',
+      type: props.type,
       layout: JSON.stringify(_tabs[0].sections),
     },
   ).then(() => {

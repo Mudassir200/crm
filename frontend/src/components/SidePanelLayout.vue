@@ -15,6 +15,7 @@
             :opened="section.opened"
           >
             <template v-if="!preview" #actions>
+              <div class="flex items-center">
               <div v-if="section.name == 'contacts_section'" class="pr-2">
                 <Link
                   value=""
@@ -41,22 +42,6 @@
                   </template>
                 </Link>
               </div>
-              <!-- <div v-else-if="section.name == 'properties_section'" class="pr-2">
-                <Link
-                  value=""
-                  doctype="Realestate Property"
-                  @change="(e) => addContact(e)"
-                >
-                  <template #target="{ togglePopover }">
-                    <Button
-                      class="h-7 px-3"
-                      variant="ghost"
-                      icon="plus"
-                      @click="togglePopover()"
-                    />
-                  </template>
-                </Link>
-              </div> -->
               <Button
                 v-else-if="section.showEditButton"
                 variant="ghost"
@@ -65,6 +50,7 @@
               >
                 <EditIcon class="h-4 w-4" />
               </Button>
+            </div>
             </template>
             <slot v-bind="{ section }">
               <FadedScrollableDiv
@@ -399,6 +385,7 @@
   <SidePanelModal
     v-if="showSidePanelModal"
     v-model="showSidePanelModal"
+    type="Right Side Panel"
     :doctype="doctype"
     @reload="() => emit('reload')"
   />
@@ -465,6 +452,7 @@ const _sections = computed(() => {
   })
 })
 
+
 function parsedField(field) {
   if (field.fieldtype == 'Select' && typeof field.options === 'string') {
     field.options = field.options.split('\n').map((option) => {
@@ -501,18 +489,14 @@ function parsedField(field) {
 
 function parsedSection(section, editButtonAdded) {
   let isContactSection = section.name == 'contacts_section'
-  let isPropertySection = section.name == 'properties_section'
   section.showEditButton = !(
     isMobileView.value ||
     !isManager() ||
-    isContactSection ||
-    isPropertySection ||
     editButtonAdded
   )
 
   section.visible =
-    isContactSection || isPropertySection ||
-    section.columns?.[0].fields.filter((f) => f.visible).length
+    isContactSection || section.columns?.[0].fields.filter((f) => f.visible).length
 
   return section
 }

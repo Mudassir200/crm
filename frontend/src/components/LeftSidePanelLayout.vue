@@ -358,6 +358,7 @@
     v-if="showSidePanelModal"
     v-model="showSidePanelModal"
     :doctype="doctype"
+    type="Left Side Panel"
     @reload="() => emit('reload')"
   />
 </template>
@@ -462,18 +463,15 @@ function parsedField(field) {
 
 function parsedSection(section, editButtonAdded) {
   let isContactSection = section.name == 'contacts_section'
-  let isPropertySection = section.name == 'properties_section'
   section.showEditButton = !(
     isMobileView.value ||
     !isManager() ||
     isContactSection ||
-    isPropertySection ||
     editButtonAdded
   )
 
   section.visible =
-    isContactSection || isPropertySection ||
-    section.columns?.[0].fields.filter((f) => f.visible).length
+    isContactSection || section.columns?.[0].fields.filter((f) => f.visible).length
 
   return section
 }

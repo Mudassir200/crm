@@ -28,6 +28,18 @@
               {{ organization.data?.name || __('Untitled') }}
             </div>
           </Tooltip>
+          <div class="field flex items-center gap-2 leading-5">
+            <Tooltip :text="__('Stage')" :hoverDelay="1">
+              <div class="shrink-0 truncate text-base text-ink-gray-8">
+                {{ __('Stage:') }}
+              </div>
+            </Tooltip>
+            <div class="flex items-center justify-between w-[65%]">
+              <Link class="form-control select-text" :value="deal.data.stage" doctype="CRM Stage"
+                @change="(data) => updateField('stage', data)" />
+
+            </div>
+          </div>
           <div class="flex gap-1.5">
             <Tooltip v-if="callEnabled" :text="__('Make a call')">
               <Button class="h-7 w-7" @click="triggerCall">
@@ -62,8 +74,8 @@
       </div>
       <SLASection v-if="deal.data.sla_status" v-model="deal.data" @updateField="updateField" />
       <div v-if="leftSidePanelSections.data" class="flex flex-1 flex-col justify-between overflow-hidden">
-        <LeftSidePanelLayout v-model="deal.data" :sections="leftSidePanelSections.data" :addContact="addContact" doctype="CRM Deal"
-          v-slot="{ section }" @update="updateField" @reload="leftSidePanelSections.reload">
+        <LeftSidePanelLayout v-model="deal.data" :sections="leftSidePanelSections.data" :addContact="addContact"
+          doctype="CRM Deal" v-slot="{ section }" @update="updateField" @reload="leftSidePanelSections.reload">
         </LeftSidePanelLayout>
       </div>
     </Resizer>
@@ -147,9 +159,9 @@
     afterInsert: (doc) => addContact(doc.name),
   }" />
   <FilesUploader v-if="deal.data?.name" v-model="showFilesUploader" doctype="CRM Deal" :docname="deal.data.name" @after="() => {
-      activities?.all_activities?.reload()
-      changeTabTo('attachments')
-    }
+    activities?.all_activities?.reload()
+    changeTabTo('attachments')
+  }
     " />
 </template>
 <script setup>
@@ -174,6 +186,7 @@ import LayoutHeader from '@/components/LayoutHeader.vue'
 import Activities from '@/components/Activities/Activities.vue'
 import OrganizationModal from '@/components/Modals/OrganizationModal.vue'
 import AssignTo from '@/components/AssignTo.vue'
+import Link from '@/components/Controls/Link.vue'
 import FilesUploader from '@/components/FilesUploader/FilesUploader.vue'
 import ContactModal from '@/components/Modals/ContactModal.vue'
 import Section from '@/components/Section.vue'
@@ -419,7 +432,7 @@ const { tabIndex } = useActiveTabManager(tabs, 'lastDealTab')
 const sections = createResource({
   url: 'crm.fcrm.doctype.crm_fields_layout.crm_fields_layout.get_sidepanel_sections',
   cache: ['sidePanelSections', 'CRM Deal'],
-  params: { doctype: 'CRM Deal',type:"Right Side Panel" },
+  params: { doctype: 'CRM Deal', type: "Right Side Panel" },
   auto: true,
   transform: (data) => getParsedSections(data),
 })
@@ -427,14 +440,12 @@ const sections = createResource({
 const leftSidePanelSections = createResource({
   url: 'crm.fcrm.doctype.crm_fields_layout.crm_fields_layout.get_sidepanel_sections',
   cache: ['leftSidePanelSections', 'CRM Deal'],
-  params: { doctype: 'CRM Deal',type:"Left Side Panel" },
+  params: { doctype: 'CRM Deal', type: "Left Side Panel" },
   auto: true,
   transform: (data) => getParsedSections(data),
 })
 
 function getParsedSections(_sections) {
-  console.log(_sections);
-  
   _sections.forEach((section) => {
     if (section.name == 'contacts_section') return
     section.columns[0].fields.forEach((field) => {
@@ -567,6 +578,8 @@ function triggerCall() {
 }
 
 function updateField(name, value, callback) {
+  console.log(name, value);
+
   updateDeal(name, value, () => {
     deal.data[name] = value
     callback?.()
