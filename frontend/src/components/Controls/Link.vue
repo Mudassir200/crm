@@ -129,6 +129,14 @@ const options = createResource({
     filters: props.filters,
   },
   transform: (data) => {
+    // let allData = data.map((option) => {
+    //   return {
+    //     label: option.label ? 
+    //           `${option.label}${option?.description ? '('+option?.description+')': ''}` 
+    //           : `${option.value}${option?.description ? '('+option?.description+')': ''}` ,
+    //     value: option.value,
+    //   }
+    // })
     let allData = data.map((option) => {
       return {
         label: option.label ? option.label : option.value,
@@ -138,6 +146,7 @@ const options = createResource({
     if (!props.hideMe && props.doctype == 'User') {
       allData.unshift({
         label: '@me',
+        description: '',
         value: '@me',
       })
     }

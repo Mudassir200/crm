@@ -122,6 +122,7 @@ def sync_default_columns(view):
 
 	if view.type == "kanban" and view.column_field:
 		field_meta = frappe.get_meta(view.doctype).get_field(view.column_field)
+		frappe.log_error("field_meta",field_meta)
 		if field_meta.fieldtype == "Link":
 			columns = frappe.get_all(
 				field_meta.options,

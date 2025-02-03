@@ -227,10 +227,11 @@ def get_data(
 	columns = frappe.parse_json(columns or "[]")
 	kanban_fields = frappe.parse_json(kanban_fields or "[]")
 	kanban_columns = frappe.parse_json(kanban_columns or "[]")
-
 	custom_view_name = view.get("custom_view_name") if view else None
 	view_type = view.get("view_type") if view else None
 	group_by_field = view.get("group_by_field") if view else None
+
+	pipelineFilters = {}
 
 	for key in filters:
 		value = filters[key]
@@ -243,6 +244,16 @@ def get_data(
 					value[i] = "%" + frappe.session.user + "%"
 		elif value == "@me":
 			filters[key] = frappe.session.user
+
+	if view_type == "kanban" and column_field == "stage":
+		if "pipeline" in filters:
+			pipelineFilters['pipeline'] = filters.get("pipeline")
+		else:
+			pipelineList = frappe.db.get_list("CRM Pipeline",order_by='sort asc')
+			frappe.log_error("pipelineList",pipelineList)
+			if len(pipelineList) > 0:
+				pipelineFilters['pipeline'] = pipelineList[0].name
+
 
 	if default_filters:
 		default_filters = frappe.parse_json(default_filters)
@@ -316,14 +327,22 @@ def get_data(
 		if not rows:
 			rows = default_rows
 
-		if not kanban_columns and column_field:
+		if (not kanban_columns or column_field == "stage") and column_field:
 			field_meta = frappe.get_meta(doctype).get_field(column_field)
 			if field_meta.fieldtype == "Link":
-				kanban_columns = frappe.get_all(
-					field_meta.options,
-					fields=["name"],
-					order_by="modified asc",
-				)
+				if column_field == "stage":
+					kanban_columns = frappe.get_all(
+						field_meta.options,
+						filters=pipelineFilters,
+						fields=["name as name","stage_name","pipeline"],
+						order_by="sort asc",
+					)
+				else:
+					kanban_columns = frappe.get_all(
+						field_meta.options,
+						fields=["name"],
+						order_by="modified asc",
+					)
 			elif field_meta.fieldtype == "Select":
 				kanban_columns = [{"name": option} for option in field_meta.options.split("\n")]
 

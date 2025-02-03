@@ -375,7 +375,7 @@ function getParams() {
   const title_field = _view?.title_field || ''
   const kanban_columns = _view?.kanban_columns || ''
   const kanban_fields = _view?.kanban_fields || ''
-
+  
   view.value = {
     name: view_name,
     label: _view?.label || getViewType().label,
@@ -594,7 +594,11 @@ const quickFilterList = computed(() => {
     filters.push(...quickFilters.data)
   }
 
+  console.log(view.value.type);
+  
   filters.forEach((filter) => {
+    console.log(filter);
+    
     filter['value'] = filter.fieldtype == 'Check' ? false : ''
     if (list.value.params?.filters[filter.fieldname]) {
       let value = list.value.params.filters[filter.fieldname]
@@ -1101,6 +1105,7 @@ defineExpose({
   viewActions,
   viewsDropdownOptions,
   currentView,
+  view,
 })
 
 // Watchers

@@ -49,7 +49,8 @@
                   </div>
                 </template>
               </NestedPopover>
-              <div class="text-ink-gray-9">{{ column.column.name }}</div>
+              <div class="text-ink-gray-9" v-if="columnField == 'stage'">{{ column.column.stage_name  }}</div>
+              <div class="text-ink-gray-9" v-else>{{ column.column.name  }}</div>
             </div>
             <div class="flex">
               <Dropdown :options="actions(column)">
@@ -193,6 +194,11 @@ const titleField = computed(() => {
   return kanban.value?.data?.title_field
 })
 
+const columnField = computed(() => {
+  return kanban.value?.data?.column_field
+})
+
+
 const columns = computed(() => {
   if (!kanban.value?.data?.data || kanban.value.data.view_type != 'kanban')
     return []
@@ -209,8 +215,8 @@ const columns = computed(() => {
 
 const deletedColumns = computed(() => {
   return columns.value
-    .filter((col) => col.column['delete'])
-    .map((col) => {
+  .filter((col) => col.column['delete'])
+  .map((col) => {
       return { label: col.column.name, value: col.column.name }
     })
 })
@@ -244,7 +250,7 @@ function updateColumn(d) {
   let toColumn = d?.to?.dataset.column
   let fromColumn = d?.from?.dataset.column
   let itemName = d?.item?.dataset.name
-
+  
   let _columns = []
   columns.value.forEach((col) => {
     col.column['order'] = col.data.map((d) => d.name)
@@ -255,11 +261,11 @@ function updateColumn(d) {
   })
 
   let data = { kanban_columns: _columns }
-
+  
   if (toColumn != fromColumn) {
     data = { item: itemName, to: toColumn, kanban_columns: _columns }
   }
-
+  
   emit('update', data)
 }
 </script>

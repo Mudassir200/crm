@@ -28,7 +28,7 @@
               {{ organization.data?.name || __('Untitled') }}
             </div>
           </Tooltip>
-          <div class="field flex items-center gap-2 leading-5">
+          <div v-if="isFieldVisible(leftSidePanelSections,'stage')" class="field flex items-center gap-2 leading-5">
             <Tooltip :text="__('Stage')" :hoverDelay="1">
               <div class="shrink-0 truncate text-base text-ink-gray-8">
                 {{ __('Stage:') }}
@@ -37,7 +37,17 @@
             <div class="flex items-center justify-between w-[65%]">
               <Link class="form-control select-text" :value="deal.data.stage" doctype="CRM Stage"
                 @change="(data) => updateField('stage', data)" />
-
+            </div>
+          </div>
+          <div v-if="isFieldVisible(leftSidePanelSections,'pipeline')" class="field flex items-center gap-2 leading-5">
+            <Tooltip :text="__('Pipeline')" :hoverDelay="1">
+              <div class="shrink-0 truncate text-base text-ink-gray-8">
+                {{ __('Pipeline:') }}
+              </div>
+            </Tooltip>
+            <div class="flex items-center justify-between w-[65%]">
+              <Link class="form-control select-text" :value="deal.data.pipeline" doctype="CRM Pipeline"
+                @change="(data) => updateField('pipeline', data)" />
             </div>
           </div>
           <div class="flex gap-1.5">
@@ -445,6 +455,18 @@ const leftSidePanelSections = createResource({
   transform: (data) => getParsedSections(data),
 })
 
+function isFieldVisible(_sections,fieldName) {
+  let show = false;
+  _sections?.data?.forEach((section) => {
+    section.columns[0].fields.forEach((field) => {
+      if (field.fieldname == fieldName && field.visible) {
+        show = true
+      }
+    })
+  })
+  return show
+}
+
 function getParsedSections(_sections) {
   _sections.forEach((section) => {
     if (section.name == 'contacts_section') return
@@ -578,8 +600,6 @@ function triggerCall() {
 }
 
 function updateField(name, value, callback) {
-  console.log(name, value);
-
   updateDeal(name, value, () => {
     deal.data[name] = value
     callback?.()
