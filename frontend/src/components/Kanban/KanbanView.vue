@@ -194,6 +194,7 @@ const titleField = computed(() => {
   return kanban.value?.data?.title_field
 })
 
+// Add New Function for get Column Field
 const columnField = computed(() => {
   return kanban.value?.data?.column_field
 })

@@ -1,8 +1,15 @@
 <template>
   <LayoutHeader v-if="deal.data">
     <template #left-header>
-      <div class="flex items-center justify-between px-6">
-        {{ __("Deals") }}
+      <div class="flex items-center justify-between">
+        <router-link class="text-xl flex items-center text-blue-700" :to="{ name: 'Deals',params: { viewType: route.query.viewType },
+          query: { view: route.query.view } }">
+          <span class="pi pi-angle-left" >
+          </span>
+          <span class="hover:underline">
+            {{ __("Deals") }}
+          </span>
+        </router-link>
       </div>
     </template>
     <template #center-header>
@@ -84,8 +91,8 @@
       </div>
       <SLASection v-if="deal.data.sla_status" v-model="deal.data" @updateField="updateField" />
       <div v-if="leftSidePanelSections.data" class="flex flex-1 flex-col justify-between overflow-hidden">
-        <LeftSidePanelLayout v-model="deal.data" :sections="leftSidePanelSections.data" :addContact="addContact"
-          doctype="CRM Deal" v-slot="{ section }" @update="updateField" @reload="leftSidePanelSections.reload">
+        <LeftSidePanelLayout v-model="deal.data" :sections="leftSidePanelSections.data"
+          doctype="CRM Deal" @update="updateField" @reload="leftSidePanelSections.reload">
         </LeftSidePanelLayout>
       </div>
     </Resizer>
@@ -94,7 +101,6 @@
         v-model="deal" />
     </Tabs>
     <Resizer side="right" class="flex flex-col justify-between border-l">
-      <SLASection v-if="deal.data.sla_status" v-model="deal.data" @updateField="updateField" />
       <div v-if="sections.data" class="flex flex-1 flex-col justify-between overflow-hidden">
         <SidePanelLayout v-model="deal.data" :sections="sections.data" :addContact="addContact" doctype="CRM Deal"
           v-slot="{ section }" @update="updateField" @reload="sections.reload">
@@ -175,19 +181,16 @@
     " />
 </template>
 <script setup>
-import Icon from '@/components/Icon.vue'
 import Resizer from '@/components/Resizer.vue'
 import LoadingIndicator from '@/components/Icons/LoadingIndicator.vue'
 import ActivityIcon from '@/components/Icons/ActivityIcon.vue'
 import EmailIcon from '@/components/Icons/EmailIcon.vue'
 import Email2Icon from '@/components/Icons/Email2Icon.vue'
 import CommentIcon from '@/components/Icons/CommentIcon.vue'
-import DetailsIcon from '@/components/Icons/DetailsIcon.vue'
 import PhoneIcon from '@/components/Icons/PhoneIcon.vue'
 import TaskIcon from '@/components/Icons/TaskIcon.vue'
 import NoteIcon from '@/components/Icons/NoteIcon.vue'
 import WhatsAppIcon from '@/components/Icons/WhatsAppIcon.vue'
-import IndicatorIcon from '@/components/Icons/IndicatorIcon.vue'
 import LinkIcon from '@/components/Icons/LinkIcon.vue'
 import ArrowUpRightIcon from '@/components/Icons/ArrowUpRightIcon.vue'
 import SuccessIcon from '@/components/Icons/SuccessIcon.vue'
@@ -195,7 +198,6 @@ import AttachmentIcon from '@/components/Icons/AttachmentIcon.vue'
 import LayoutHeader from '@/components/LayoutHeader.vue'
 import Activities from '@/components/Activities/Activities.vue'
 import OrganizationModal from '@/components/Modals/OrganizationModal.vue'
-import AssignTo from '@/components/AssignTo.vue'
 import Link from '@/components/Controls/Link.vue'
 import FilesUploader from '@/components/FilesUploader/FilesUploader.vue'
 import ContactModal from '@/components/Modals/ContactModal.vue'
@@ -209,7 +211,6 @@ import {
   setupAssignees,
   setupCustomizations,
   errorMessage,
-  copyToClipboard,
 } from '@/utils'
 import { getView } from '@/utils/view'
 import { getSettings } from '@/stores/settings'
@@ -222,7 +223,6 @@ import {
   Tooltip,
   Avatar,
   Tabs,
-  Breadcrumbs,
   call,
   usePageMeta,
 } from 'frappe-ui'
@@ -358,31 +358,6 @@ function validateRequired(fieldname, value) {
   return false
 }
 
-const breadcrumbs = computed(() => {
-  let items = [{ label: __('Deals'), route: { name: 'Deals' } }]
-
-  if (route.query.view || route.query.viewType) {
-    let view = getView(route.query.view, route.query.viewType, 'CRM Deal')
-    if (view) {
-      items.push({
-        label: __(view.label),
-        icon: view.icon,
-        route: {
-          name: 'Deals',
-          params: { viewType: route.query.viewType },
-          query: { view: route.query.view },
-        },
-      })
-    }
-  }
-
-  items.push({
-    label: organization.data?.name || __('Untitled'),
-    route: { name: 'Deal', params: { dealId: deal.data.name } },
-  })
-  return items
-})
-
 usePageMeta(() => {
   return {
     title: organization.data?.name || deal.data?.name,
@@ -455,6 +430,7 @@ const leftSidePanelSections = createResource({
   transform: (data) => getParsedSections(data),
 })
 
+// Add Condition For Showing Pipeline and Stage field 
 function isFieldVisible(_sections,fieldName) {
   let show = false;
   _sections?.data?.forEach((section) => {
@@ -564,19 +540,6 @@ const dealContacts = createResource({
   transform: (data) => {
     data.forEach((contact) => {
       contact.opened = false
-    })
-    return data
-  },
-})
-
-const dealProperties = createResource({
-  url: 'crm.fcrm.doctype.crm_deal.api.get_deal_property',
-  params: { name: props.dealId },
-  cache: ['deal_properties', props.dealId],
-  auto: true,
-  transform: (data) => {
-    data.forEach((property) => {
-      property.opened = false
     })
     return data
   },

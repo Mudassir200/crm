@@ -21,7 +21,4 @@ class CRMPipeline(Document):
 
 @frappe.whitelist()
 def sortExist(sort):
-    return frappe.db.count('CRM Pipeline',
-			{
-                'sort':sort
-			})
+    return frappe.db.count('CRM Pipeline',{'sort':sort})

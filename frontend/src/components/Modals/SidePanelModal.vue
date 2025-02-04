@@ -136,14 +136,12 @@ function saveChanges() {
     })
   })
   loading.value = true
-  call(
-    'crm.fcrm.doctype.crm_fields_layout.crm_fields_layout.save_fields_layout',
+  call('crm.fcrm.doctype.crm_fields_layout.crm_fields_layout.save_fields_layout',
     {
       doctype: _doctype.value,
       type: props.type,
       layout: JSON.stringify(_tabs[0].sections),
-    },
-  ).then(() => {
+    }).then(() => {
     loading.value = false
     show.value = false
     capture('side_panel_layout_builder', { doctype: _doctype.value })

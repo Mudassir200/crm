@@ -231,7 +231,6 @@ def get_data(
 	view_type = view.get("view_type") if view else None
 	group_by_field = view.get("group_by_field") if view else None
 
-	pipelineFilters = {}
 
 	for key in filters:
 		value = filters[key]
@@ -245,6 +244,7 @@ def get_data(
 		elif value == "@me":
 			filters[key] = frappe.session.user
 
+	pipelineFilters = {}
 	if view_type == "kanban" and column_field == "stage":
 		if "pipeline" in filters:
 			pipelineFilters['pipeline'] = filters.get("pipeline")

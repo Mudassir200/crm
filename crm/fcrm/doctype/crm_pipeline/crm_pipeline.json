@@ -24,12 +24,13 @@
    "fieldtype": "Int",
    "in_list_view": 1,
    "label": "Sort",
+   "non_negative": 1,
    "reqd": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-02-03 14:40:30.672137",
+ "modified": "2025-02-04 16:15:34.310447",
  "modified_by": "Administrator",
  "module": "FCRM",
  "name": "CRM Pipeline",

@@ -800,7 +800,6 @@ async function updateKanbanSettings(data) {
   if (props.doctype == "CRM Deal" && view.value.type == "kanban" && view.value.column_field == "stage") {
     if(!view?.value?.filters.hasOwnProperty('pipeline')) {
       view.value.filters = defaultKanbanFilters();
-      console.log("change pipeline");       
     }        
   }
 

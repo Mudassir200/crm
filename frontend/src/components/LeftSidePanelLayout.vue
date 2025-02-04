@@ -393,12 +393,6 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
-  addContact: {
-    type: Function,
-  },
-  contactShow: {
-    type: Boolean,
-  },
 })
 
 const { getFormattedPercent, getFormattedFloat, getFormattedCurrency } =
@@ -462,17 +456,8 @@ function parsedField(field) {
 }
 
 function parsedSection(section, editButtonAdded) {
-  let isContactSection = section.name == 'contacts_section'
-  section.showEditButton = !(
-    isMobileView.value ||
-    !isManager() ||
-    isContactSection ||
-    editButtonAdded
-  )
-
-  section.visible =
-    isContactSection || section.columns?.[0].fields.filter((f) => f.visible).length
-
+  section.showEditButton = !(isMobileView.value ||!isManager() || editButtonAdded )
+  section.visible = section.columns?.[0].fields.filter((f) => f.visible).length
   return section
 }
 
