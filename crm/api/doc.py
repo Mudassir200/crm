@@ -250,7 +250,6 @@ def get_data(
 			pipelineFilters['pipeline'] = filters.get("pipeline")
 		else:
 			pipelineList = frappe.db.get_list("CRM Pipeline",order_by='sort asc')
-			frappe.log_error("pipelineList",pipelineList)
 			if len(pipelineList) > 0:
 				pipelineFilters['pipeline'] = pipelineList[0].name
 

@@ -235,6 +235,7 @@ import {
   call,
   FeatherIcon,
   usePageMeta,
+  createListResource
 } from 'frappe-ui'
 import { computed, ref, onMounted, watch, h, markRaw } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
@@ -333,7 +334,7 @@ const view = ref({
   icon: '',
   filters: {},
   order_by: 'modified desc',
-  column_field: 'status',
+  column_field: 'stage',
   title_field: '',
   kanban_columns: '',
   kanban_fields: '',
@@ -366,12 +367,12 @@ function getParams() {
   let _view = getView(route.query.view, route.params.viewType, props.doctype)
   const view_name = _view?.name || ''
   const view_type = _view?.type || route.params.viewType || 'list'
-  const filters = (_view?.filters && JSON.parse(_view.filters)) || {}
+  const filters = (_view?.filters && JSON.parse(_view.filters)) || defaultKanbanFilters()
   const order_by = _view?.order_by || 'modified desc'
   const group_by_field = _view?.group_by_field || 'owner'
   const columns = _view?.columns || ''
   const rows = _view?.rows || ''
-  const column_field = _view?.column_field || 'status'
+  const column_field = _view?.column_field || 'stage'
   const title_field = _view?.title_field || ''
   const kanban_columns = _view?.kanban_columns || ''
   const kanban_fields = _view?.kanban_fields || ''
@@ -416,6 +417,30 @@ function getParams() {
     page_length_count: pageLengthCount.value,
   }
 }
+
+const pipelineList = createListResource({
+  doctype: "CRM Pipeline",
+  cache: ['pipeline', "CRM Pipeline"],
+  filters:{},
+  fields: ["name", "sort"],
+  orderBy: "sort asc"  
+
+}) 
+
+onMounted(() => {
+  if (pipelineList.data == null) {
+    pipelineList.fetch()
+  }
+})
+
+function defaultKanbanFilters() {
+  let filters = {}
+  if (props.doctype == 'CRM Deal' && view.value.type == 'kanban' && pipelineList.data != null) {
+      filters = { "pipeline" : pipelineList.data[0].name}
+  }
+  return filters
+}
+
 
 list.value = createResource({
   url: 'crm.api.doc.get_data',
@@ -594,11 +619,7 @@ const quickFilterList = computed(() => {
     filters.push(...quickFilters.data)
   }
 
-  console.log(view.value.type);
-  
-  filters.forEach((filter) => {
-    console.log(filter);
-    
+  filters.forEach((filter) => {    
     filter['value'] = filter.fieldtype == 'Check' ? false : ''
     if (list.value.params?.filters[filter.fieldname]) {
       let value = list.value.params.filters[filter.fieldname]
@@ -650,6 +671,16 @@ function applyQuickFilter(filter, value) {
 }
 
 function updateFilter(filters) {
+  if (props.doctype == "CRM Deal" && view.value.type == "kanban" && view.value.column_field == "stage" && !filters.hasOwnProperty('pipeline')) {
+    if (view.value?.filters?.hasOwnProperty('pipeline')) {
+      filters['pipeline'] = view.value?.filters['pipeline'];
+    }
+    if (!filters.hasOwnProperty('pipeline')) {
+      list.value.reload()
+      return      
+    }
+  }
+
   viewUpdated.value = true
   if (!defaultParams.value) {
     defaultParams.value = getParams()
@@ -737,6 +768,7 @@ async function updateKanbanSettings(data) {
       value: data.to,
     })
   }
+  
   let isDirty = viewUpdated.value
 
   viewUpdated.value = true
@@ -764,6 +796,13 @@ async function updateKanbanSettings(data) {
   }
 
   list.value.reload()
+
+  if (props.doctype == "CRM Deal" && view.value.type == "kanban" && view.value.column_field == "stage") {
+    if(!view?.value?.filters.hasOwnProperty('pipeline')) {
+      view.value.filters = defaultKanbanFilters();
+      console.log("change pipeline");       
+    }        
+  }
 
   if (!route.query.view) {
     create_or_update_default_view()
