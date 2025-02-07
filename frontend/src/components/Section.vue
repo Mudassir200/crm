@@ -42,6 +42,7 @@
         <slot v-bind="{ opened, open, close, toggle }" />
       </div>
     </transition>
+    <slot name="footer"></slot>
   </div>
 </template>
 <script setup>
