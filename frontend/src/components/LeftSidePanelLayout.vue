@@ -213,6 +213,19 @@
                           </template>
                         </Link>
                         <Link
+                          v-else-if="field.fieldtype === 'Link' && field.fieldname == 'stage'"
+                          class="form-control select-text"
+                          :value="data[field.fieldname]"
+                          :doctype="field.options"
+                          :filters="field.filters"
+                          :dependsFilter="data?.pipeline ? { 'pipeline': data.pipeline} : {}"
+                          :placeholder="field.placeholder"
+                          @change="
+                            (data) => emit('update', field.fieldname, data)
+                          "
+                          :onCreate="field.create"
+                        />
+                        <Link
                           v-else-if="field.fieldtype === 'Link'"
                           class="form-control select-text"
                           :value="data[field.fieldname]"
