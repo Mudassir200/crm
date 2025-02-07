@@ -1,0 +1,139 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "field:section_title",
+ "creation": "2025-02-05 12:05:10.899955",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "section_title",
+  "source_doctype",
+  "target_doctype",
+  "target_field",
+  "column_break_wxtp",
+  "reference_doctype",
+  "reference_field",
+  "empty_section_message",
+  "route",
+  "enabled"
+ ],
+ "fields": [
+  {
+   "fieldname": "section_title",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Section Title",
+   "reqd": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "column_break_wxtp",
+   "fieldtype": "Column Break"
+  },
+  {
+   "description": "The doctype from which data will be fetched",
+   "fieldname": "source_doctype",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Source Doctype",
+   "link_filters": "[[\"DocType\",\"istable\",\"=\",0]]",
+   "options": "DocType",
+   "reqd": 1
+  },
+  {
+   "default": "1",
+   "fieldname": "enabled",
+   "fieldtype": "Check",
+   "in_list_view": 1,
+   "label": "Enabled"
+  },
+  {
+   "description": "The doctype where this card will be shown.\n",
+   "fieldname": "reference_doctype",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Reference Doctype",
+   "link_filters": "[[\"DocType\",\"istable\",\"=\",0]]",
+   "options": "DocType",
+   "reqd": 1
+  },
+  {
+   "description": "The doctype where data will be entered.",
+   "fieldname": "target_doctype",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Target Doctype",
+   "link_filters": "[[\"DocType\",\"istable\",\"=\",1]]",
+   "options": "DocType",
+   "reqd": 1
+  },
+  {
+   "fieldname": "target_field",
+   "fieldtype": "Autocomplete",
+   "label": "Target Field",
+   "reqd": 1
+  },
+  {
+   "fieldname": "empty_section_message",
+   "fieldtype": "Data",
+   "label": "Empty Section Message",
+   "reqd": 1
+  },
+  {
+   "fieldname": "route",
+   "fieldtype": "Data",
+   "label": "Route"
+  },
+  {
+   "fieldname": "reference_field",
+   "fieldtype": "Autocomplete",
+   "label": "Reference Field",
+   "reqd": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2025-02-06 19:11:49.428359",
+ "modified_by": "Administrator",
+ "module": "FCRM",
+ "name": "CRM Association Card",
+ "naming_rule": "By fieldname",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Sales Manager",
+   "share": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Sales User",
+   "share": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

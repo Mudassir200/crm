@@ -10,7 +10,8 @@
   "column_break_post",
   "type",
   "section_break_ttpm",
-  "layout"
+  "layout",
+  "association_card"
  ],
  "fields": [
   {
@@ -42,11 +43,19 @@
   {
    "fieldname": "column_break_post",
    "fieldtype": "Column Break"
+  },
+  {
+   "depends_on": "eval:doc.type == 'Right Side Panel'",
+   "fieldname": "association_card",
+   "fieldtype": "Table",
+   "label": "Association Card",
+   "mandatory_depends_on": "eval:doc.type == 'Right Side Panel'",
+   "options": "CRM Fields Layout Cards"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-01-30 18:12:50.490887",
+ "modified": "2025-02-05 16:17:37.678010",
  "modified_by": "Administrator",
  "module": "FCRM",
  "name": "CRM Fields Layout",

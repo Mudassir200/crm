@@ -95,6 +95,51 @@ def get_sidepanel_sections(doctype,type="Side Panel"):
 	return layout
 
 
+@frappe.whitelist()
+def get_right_sidepanel_sections(doctype,type="Right Side Panel"):
+	if not frappe.db.exists("CRM Fields Layout", {"dt": doctype, "type": type}):
+		return []
+	cards = frappe.get_doc("CRM Fields Layout", {"dt": doctype, "type":type}).association_card
+	if not cards:
+		return []
+
+	layout = []
+	not_allowed_fieldtypes = [
+		"Tab Break",
+		"Section Break",
+		"Column Break",
+	]
+
+	# cards = [{
+	# 	"name": "rc0iohf6o5",
+	# 	"association_card": "Contacts",
+	# 	"section_title": "Contacts",  
+	# 	"source_doctype": "Contact",   # Doctype for show list of records
+	# 	"target_doctype": "CRM Contacts",  # Doctype for show selected record details
+	# }]
+	for card in cards:
+		fields = frappe.get_meta(card.get("target_doctype")).fields
+		fields = [field for field in fields if field.fieldtype not in not_allowed_fieldtypes]
+		
+		layout.append({
+			"label": card.get("section_title"),
+			"name": card.get("name"),
+			"source_doctype": card.get("source_doctype"),
+			"target_doctype": card.get("target_doctype"),
+			"target_field": card.get("target_field"),
+			"reference_field": card.get("reference_field"),
+			"empty_message": card.get("empty_message"),
+			"route": card.get("route"),
+			"opened": True,
+			"editable": False,
+			"visible": True,
+			"fields":fields,
+			"data":False
+		})
+
+	return layout
+
+
 def handle_perm_level_restrictions(field, doctype, parent_doctype=None):
 	if field.permlevel == 0:
 		return
@@ -203,3 +248,13 @@ def get_default_layout(doctype: str):
 			tabs[-1]["sections"][-1]["columns"][-1]["fields"].append(field.fieldname)
 
 	return tabs
+
+@frappe.whitelist()
+def get_cards(dt):
+    return frappe.db.get_list('CRM Association Card',
+			filters={
+				'reference_doctype': dt,
+                'enabled':1
+			},
+			fields=["name as value","section_title as label"]
+		)
