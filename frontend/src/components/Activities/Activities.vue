@@ -367,6 +367,9 @@
     <div v-else-if="title == 'Data'" class="h-full flex flex-col px-3 sm:px-10">
       <DataFields :doctype="doctype" :docname="doc.data.name" />
     </div>
+    <div v-else-if="title == 'Overview'" class="h-full flex flex-col px-3 sm:px-10">
+      <Overview :doctype="doctype" :docname="doc.data.name" />
+    </div>
     <div
       v-else
       class="flex flex-1 flex-col items-center justify-center gap-3 text-xl font-medium text-ink-gray-4"
@@ -458,6 +461,7 @@ import NoteArea from '@/components/Activities/NoteArea.vue'
 import TaskArea from '@/components/Activities/TaskArea.vue'
 import AttachmentArea from '@/components/Activities/AttachmentArea.vue'
 import DataFields from '@/components/Activities/DataFields.vue'
+import Overview from '@/components/Activities/Overview.vue'
 import UserAvatar from '@/components/UserAvatar.vue'
 import ActivityIcon from '@/components/Icons/ActivityIcon.vue'
 import Email2Icon from '@/components/Icons/Email2Icon.vue'

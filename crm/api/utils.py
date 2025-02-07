@@ -1,10 +1,12 @@
 import frappe
-import json
 from frappe import _
 
 
 @frappe.whitelist()
 def get_association_list(target_doctype,dt,name,source_doctype=None,target_field=None):
+	if not frappe.has_permission(dt, "read", name):
+		frappe.throw(_("Not allowed to read this api"), frappe.PermissionError)
+
 	associations = frappe.get_all(
 		target_doctype,
 		filters={"parenttype": dt, "parent": name},

@@ -78,13 +78,18 @@
         <span>{{ __('New Message') }}</span>
       </Button>
     </div>
+    <div class="flex gap-2 shrink-0" v-else-if="title == 'Overview'">
+      <!-- <Button variant="ghost">
+        <FeatherIcon name="settings" class="h-4 w-4" />
+      </Button> -->
+    </div>
     <Dropdown v-else :options="defaultActions" @click.stop>
       <template v-slot="{ open }">
         <Button variant="solid" class="flex items-center gap-1">
           <template #prefix>
             <FeatherIcon name="plus" class="h-4 w-4" />
           </template>
-          <span>{{ __('New') }}</span>
+          <span>{{ __('New') }}</span>11
           <template #suffix>
             <FeatherIcon
               :name="open ? 'chevron-up' : 'chevron-down'"

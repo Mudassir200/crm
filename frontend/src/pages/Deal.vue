@@ -120,6 +120,14 @@
       </div>
     </Resizer>
   </div>
+  <!-- <div v-if="editedDetails" class="p-4 flex gap-3 bottom-0 right-0" style="box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;">
+    <Button variant="solid" @click="updateDeal('save', true)">
+      {{ __('Save') }}
+    </Button>
+    <Button variant="outline" @click="updateDeal('save_and_close', true)">
+      {{ __('Discard') }}
+    </Button>
+  </div> -->
   <OrganizationModal v-model="showOrganizationModal" v-model:organization="_organization" :options="{
     redirect: false,
     afterInsert: (doc) => updateField('organization', doc.name),
@@ -153,6 +161,7 @@ import LayoutHeader from '@/components/LayoutHeader.vue'
 import Activities from '@/components/Activities/Activities.vue'
 import OrganizationModal from '@/components/Modals/OrganizationModal.vue'
 import Link from '@/components/Controls/Link.vue'
+import DetailsIcon from '@/components/Icons/DetailsIcon.vue'
 import FilesUploader from '@/components/FilesUploader/FilesUploader.vue'
 import SLASection from '@/components/SLASection.vue'
 import CustomActions from '@/components/CustomActions.vue'
@@ -195,6 +204,7 @@ const props = defineProps({
 })
 
 const showPipelineModal = ref(false)
+// const editedDetails = ref(false)
 
 const deal = createResource({
   url: 'crm.fcrm.doctype.crm_deal.api.get_deal',
@@ -315,6 +325,15 @@ usePageMeta(() => {
 
 const tabs = computed(() => {
   let tabOptions = [
+    {
+      name: 'Overview',
+      label: __('Overview'),
+    },
+    {
+      name: 'Data',
+      label: __('Data'),
+      icon: DetailsIcon,
+    },
     {
       name: 'Activity',
       label: __('Activity'),
