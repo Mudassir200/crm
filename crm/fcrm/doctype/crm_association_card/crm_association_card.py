@@ -8,6 +8,7 @@ from frappe.model.document import Document
 class CRMAssociationCard(Document):
 	pass
 
+# Add Fuction for get Fields by doctype
 @frappe.whitelist()
 def get_fields(dt):
     fields = frappe.db.get_list('DocField',
