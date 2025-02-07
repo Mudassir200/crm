@@ -73,6 +73,10 @@ const props = defineProps({
     type: [Array, String],
     default: [],
   },
+  dependsFilter: {
+    type: Object,
+    default: {},
+  },
   modelValue: {
     type: String,
     default: '',
@@ -102,22 +106,6 @@ const value = computed({
 const autocomplete = ref(null)
 const text = ref('')
 
-watchDebounced(
-  () => autocomplete.value?.query,
-  (val) => {
-    val = val || ''
-    if (text.value === val) return
-    text.value = val
-    reload(val)
-  },
-  { debounce: 300, immediate: true },
-)
-
-watchDebounced(
-  () => props.doctype,
-  () => reload(''),
-  { debounce: 300, immediate: true },
-)
 
 const options = createResource({
   url: 'frappe.desk.search.search_link',
@@ -126,17 +114,9 @@ const options = createResource({
   params: {
     txt: text.value,
     doctype: props.doctype,
-    filters: props.filters,
+    filters: handelFilter(),
   },
   transform: (data) => {
-    // let allData = data.map((option) => {
-    //   return {
-    //     label: option.label ? 
-    //           `${option.label}${option?.description ? '('+option?.description+')': ''}` 
-    //           : `${option.value}${option?.description ? '('+option?.description+')': ''}` ,
-    //     value: option.value,
-    //   }
-    // })
     let allData = data.map((option) => {
       return {
         label: option.label || option.value,
@@ -154,11 +134,11 @@ const options = createResource({
   },
 })
 
-function reload(val) {
+function reload(val,force=false) {
   if (
-    options.data?.length &&
+    (options.data?.length &&
     val === options.params?.txt &&
-    props.doctype === options.params?.doctype
+    props.doctype === options.params?.doctype) && !force
   )
     return
 
@@ -166,10 +146,18 @@ function reload(val) {
     params: {
       txt: val,
       doctype: props.doctype,
-      filters: props.filters,
+      filters: handelFilter(),
     },
   })
   options.reload()
+}
+
+function handelFilter() {
+  if (Array.isArray(props.filters) && props.filters?.length > 0) {
+    return props.filters
+  } else {
+    return props.dependsFilter
+  }
 }
 
 function clearValue(close) {
@@ -186,4 +174,32 @@ const labelClasses = computed(() => {
     'text-ink-gray-5',
   ]
 })
+
+watchDebounced(
+  () => autocomplete.value?.query,
+  (val) => {
+    val = val || ''
+    if (text.value === val) return
+    text.value = val
+    reload(val)
+  },
+  { debounce: 300, immediate: true },
+)
+
+watchDebounced(
+  () => props.doctype,
+  () => reload(''),
+  { debounce: 300, immediate: true },
+)
+
+watchDebounced(
+  () => props.dependsFilter,
+  (filter) => {
+    if (Object.keys(filter).length > 0) {
+      reload('',true)
+    }
+  },
+  { debounce: 300, immediate: true },
+)
+
 </script>
