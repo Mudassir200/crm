@@ -3,24 +3,25 @@ from frappe import _
 
 
 @frappe.whitelist()
-def get_association_list(target_doctype,dt,name,source_doctype=None,target_field=None):
+def get_association_list(dt,name,field,source_doctype,istable,target_field,selected_fields=["name"]):
 	if not frappe.has_permission(dt, "read", name):
 		frappe.throw(_("Not allowed to read this api"), frappe.PermissionError)
 
-	associations = frappe.get_all(
-		target_doctype,
-		filters={"parenttype": dt, "parent": name},
-		fields=["*"],
-	)
-	object_association = []
-	keys_to_remove = ["parent","idx","creation","modified","modified_by","owner","docstatus","parenttype","parentfield"]
-	for association in associations:
-		for key in keys_to_remove: association.pop(key, None)
-		# association = frappe.get_doc(source_doctype, association[target_field]).as_dict()
-		object_association.append(association)
+	doc = frappe.get_cached_doc(dt,name)
 	
+	associations = doc.get(field)
 
-	return object_association
+	associations_list = []
+	if istable:
+		for association in associations:
+			if association.get(target_field):
+				association = frappe.db.get_value(source_doctype, association.get(target_field),selected_fields,as_dict=True)
+				associations_list.append(association)
+	else:
+		association = frappe.db.get_value(source_doctype, associations,selected_fields,as_dict=True)
+		associations_list.append(association)
+
+	return associations_list
 
 @frappe.whitelist()
 def add_association(dt,name,field,target_field,value):

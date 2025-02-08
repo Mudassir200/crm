@@ -8,15 +8,22 @@
  "engine": "InnoDB",
  "field_order": [
   "section_title",
-  "source_doctype",
-  "target_doctype",
-  "target_field",
-  "column_break_wxtp",
   "reference_doctype",
   "reference_field",
   "empty_section_message",
   "route",
-  "enabled"
+  "column_break_wxtp",
+  "source_doctype",
+  "target_doctype",
+  "target_field",
+  "is_child_table",
+  "enabled",
+  "section_break_lffg",
+  "title_field",
+  "column_break_xqdm",
+  "select_field",
+  "selected_fields_html",
+  "selected_fields"
  ],
  "fields": [
   {
@@ -59,20 +66,21 @@
    "reqd": 1
   },
   {
+   "depends_on": "eval:doc.is_child_table",
    "description": "The doctype where data will be entered.",
    "fieldname": "target_doctype",
    "fieldtype": "Link",
    "in_list_view": 1,
    "label": "Target Doctype",
-   "link_filters": "[[\"DocType\",\"istable\",\"=\",1]]",
-   "options": "DocType",
-   "reqd": 1
+   "mandatory_depends_on": "eval:doc.is_child_table",
+   "options": "DocType"
   },
   {
+   "depends_on": "eval:doc.is_child_table && doc.source_doctype",
    "fieldname": "target_field",
    "fieldtype": "Autocomplete",
    "label": "Target Field",
-   "reqd": 1
+   "mandatory_depends_on": "eval:doc.is_child_table"
   },
   {
    "fieldname": "empty_section_message",
@@ -90,11 +98,51 @@
    "fieldtype": "Autocomplete",
    "label": "Reference Field",
    "reqd": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "is_child_table",
+   "fieldtype": "Check",
+   "hidden": 1,
+   "in_list_view": 1,
+   "label": "Is Child Table"
+  },
+  {
+   "depends_on": "eval:doc.source_doctype",
+   "fieldname": "section_break_lffg",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "title_field",
+   "fieldtype": "Autocomplete",
+   "label": "Title Field",
+   "reqd": 1
+  },
+  {
+   "default": "[]",
+   "fieldname": "selected_fields",
+   "fieldtype": "JSON",
+   "hidden": 1,
+   "label": "Selected Fields"
+  },
+  {
+   "fieldname": "selected_fields_html",
+   "fieldtype": "HTML",
+   "label": "Selected Fields"
+  },
+  {
+   "fieldname": "select_field",
+   "fieldtype": "Autocomplete",
+   "label": "Select Field"
+  },
+  {
+   "fieldname": "column_break_xqdm",
+   "fieldtype": "Column Break"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-02-07 14:54:27.625267",
+ "modified": "2025-02-07 19:46:16.150794",
  "modified_by": "Administrator",
  "module": "FCRM",
  "name": "CRM Association Card",

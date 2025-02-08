@@ -107,7 +107,7 @@ function handleContactUpdate(doc) {
   if (doc.name && props.options.redirect) {
     router.push({
       name: 'Contact',
-      params: { contactId: doc.name },
+      params: { name: doc.name },
     })
   }
   show.value = false

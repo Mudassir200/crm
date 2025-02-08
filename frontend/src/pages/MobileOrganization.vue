@@ -185,7 +185,7 @@ import { h, computed, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
 const props = defineProps({
-  organizationId: {
+  name: {
     type: String,
     required: true,
   },
@@ -201,8 +201,8 @@ const router = useRouter()
 
 const organization = createDocumentResource({
   doctype: 'CRM Organization',
-  name: props.organizationId,
-  cache: ['organization', props.organizationId],
+  name: props.name,
+  cache: ['organization', props.name],
   fields: ['*'],
   auto: true,
 })
@@ -241,10 +241,10 @@ const breadcrumbs = computed(() => {
   }
 
   items.push({
-    label: props.organizationId,
+    label: props.name,
     route: {
       name: 'Organization',
-      params: { organizationId: props.organizationId },
+      params: { name: props.name },
     },
   })
   return items
@@ -252,7 +252,7 @@ const breadcrumbs = computed(() => {
 
 usePageMeta(() => {
   return {
-    title: props.organizationId,
+    title: props.name,
     icon: brand.favicon,
   }
 })
@@ -267,7 +267,7 @@ function validateFile(file) {
 async function changeOrganizationImage(file) {
   await call('frappe.client.set_value', {
     doctype: 'CRM Organization',
-    name: props.organizationId,
+    name: props.name,
     fieldname: 'organization_logo',
     value: file?.file_url || '',
   })
@@ -286,7 +286,7 @@ async function deleteOrganization() {
         async onClick(close) {
           await call('frappe.client.delete', {
             doctype: 'CRM Organization',
-            name: props.organizationId,
+            name: props.name,
           })
           close()
           router.push({ name: 'Organizations' })
@@ -373,7 +373,7 @@ const tabs = [
 const deals = createListResource({
   type: 'list',
   doctype: 'CRM Deal',
-  cache: ['deals', props.organizationId],
+  cache: ['deals', props.name],
   fields: [
     'name',
     'organization',
@@ -386,7 +386,7 @@ const deals = createListResource({
     'modified',
   ],
   filters: {
-    organization: props.organizationId,
+    organization: props.name,
   },
   orderBy: 'modified desc',
   pageLength: 20,
@@ -396,7 +396,7 @@ const deals = createListResource({
 const contacts = createListResource({
   type: 'list',
   doctype: 'Contact',
-  cache: ['contacts', props.organizationId],
+  cache: ['contacts', props.name],
   fields: [
     'name',
     'full_name',
@@ -407,7 +407,7 @@ const contacts = createListResource({
     'modified',
   ],
   filters: {
-    company_name: props.organizationId,
+    company_name: props.name,
   },
   orderBy: 'modified desc',
   pageLength: 20,

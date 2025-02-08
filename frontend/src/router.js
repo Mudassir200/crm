@@ -56,7 +56,7 @@ const routes = [
     component: () => import('@/pages/Contacts.vue'),
   },
   {
-    path: '/contacts/:contactId',
+    path: '/contacts/:name',
     name: 'Contact',
     component: () => import(`@/pages/${handleMobileView('Contact')}.vue`),
     props: true,
@@ -68,7 +68,7 @@ const routes = [
     component: () => import('@/pages/Organizations.vue'),
   },
   {
-    path: '/organizations/:organizationId',
+    path: '/organizations/:name',
     name: 'Organization',
     component: () => import(`@/pages/${handleMobileView('Organization')}.vue`),
     props: true,

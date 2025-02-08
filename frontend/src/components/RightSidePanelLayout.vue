@@ -4,11 +4,11 @@
       <div v-if="section.visible" class="section flex flex-col">
         <div v-if="i !== firstVisibleIndex()" class="w-full section-border h-px border-t" />
         <div class="p-1 sm:p-3">
-          <Section labelClass="font-semibold" headerClass="h-8" :label="section.label" :hideLabel="!section.label"
+          <Section labelClass="font-semibold" headerClass="h-8" :label="getSectionLabel(section)" :hideLabel="!section.label"
             :opened="section.opened">
             <template v-if="!preview" #actions>
               <div class="flex items-center">
-                <div class="pr-2">
+                <div v-if="section.istable">
                   <Link value="" :doctype="section.source_doctype" @change="(e) => addAssociation(e, section)">
                   <template #target="{ togglePopover }">
                     <Button class="h-7 px-3" variant="ghost" icon="plus" @click="togglePopover()" />
@@ -29,38 +29,30 @@
                   <span>{{ __('Loading...') }}</span>
                 </div>
                 <div v-else-if="section.data?.data?.length" v-for="(object, i) in section.data.data" :key="object.name"
-                  class="gap-2 w-[100%] px-1" :class="[i == 0 ? 'pt-2' : 'pt-1']">
+                  class="w-[100%] pl-1" :class="[i == 0 ? 'pt-1' : 'pt-0']">
                   <Section :opened="false">
                     <template #header="{ opened, toggle }">
                       <div class="flex flex-col cursor-pointer gap-2 text-base leading-5 text-ink-gray-7">
                         <template v-for="(field, i) in section.fields ?? []" :key="field?.name">
-                          <div class="flex items-center gap-2" v-if="field.in_preview && field.in_list_view">
-                            <div class="flex w-full cursor-pointer items-center justify-between gap-2 pr-1"
-                              v-if="field.fieldtype == 'Link'">
-                              <div class="truncate font-bold text-[#0091ae]" @click="showAccordion(object,section.fields) ? toggle() : null">
+                          <div class="flex items-center gap-2"
+                            v-if="object[field.fieldname] !== null && object[field.fieldname] !== '' && object[field.fieldname] !== undefined">
+                            <div class="flex w-full cursor-pointer items-center justify-between gap-2"
+                              v-if="field.fieldname == section.title_field">
+                              <div class="truncate font-bold text-[#0091ae]"
+                                @click="showAccordion(object, section.fields) ? toggle() : null">
                                 {{ object[field.fieldname] }}
                               </div>
                               <div class="flex items-center">
-                                <Dropdown :options="otherOptions(object,section)">
-                                  <Button
-                                    icon="more-horizontal"
-                                    class="text-ink-gray-5"
-                                    variant="ghost"
-                                  />
+                                <Dropdown v-if="section.istable" :options="otherOptions(object, section)">
+                                  <Button icon="more-horizontal" class="text-ink-gray-5" variant="ghost" />
                                 </Dropdown>
                                 <Button variant="ghost" v-if="section?.route" @click="
                                   router.push({
                                     name: section.route,
-                                    params: { contactId: object[field.fieldname] },
+                                    params: { name: object[field.fieldname] },
                                   })
                                   ">
                                   <ArrowUpRightIcon class="h-4 w-4" />
-                                </Button>
-                                <Button variant="ghost" @click="toggle()"
-                                  :disabled="!showAccordion(object,section.fields)">
-                                  <FeatherIcon name="chevron-right"
-                                    class="h-4 w-4 text-ink-gray-9 transition-all duration-300"
-                                    :class="{ 'rotate-90': opened }" />
                                 </Button>
                               </div>
                             </div>
@@ -69,29 +61,11 @@
                             </div>
                           </div>
                         </template>
-                        <!-- <div class="transition-all duration-200 ease-in-out text-[#0091ae] text-xs"
-                          v-show="showAccordion(object, section.fields) && !opened" @click="toggle()">
-                          {{ __('Show More') }}
-                        </div> -->
-                      </div>
-                    </template>
-                    <template v-if="showAccordion(object,section.fields)" #default="{ opened, toggle }">
-                      <div class="flex flex-col cursor-pointer gap-2 pr-1 pt-1.5 text-base leading-5 text-ink-gray-7">
-                        <template v-for="(field, i) in section.fields ?? []" :key="field?.name">
-                          <div class="flex items-center gap-2" v-if="!field.in_preview && field.in_list_view">
-                            <div class="truncate">
-                              {{ object[field.fieldname] }}
-                            </div>
-                          </div>
-                        </template>
-                        <!-- <div class="text-[#0091ae] text-xs" @click="toggle()">
-                          {{ __('Show Less') }}
-                        </div> -->
                       </div>
                     </template>
                     <template #footer>
                       <div v-if="i != section.data.data.length - 1"
-                        class="h-px mb-1 mt-1 border-t border-1 border-gray-300" />
+                        class="mb-1 mt-2 border-t border-1 border-gray-300" />
                     </template>
                   </Section>
                 </div>
@@ -118,12 +92,8 @@ import Link from '@/components/Controls/Link.vue'
 import LoadingIndicator from '@/components/Icons/LoadingIndicator.vue'
 import { createToast } from '@/utils'
 import SidePanelModal from '@/components/Modals/SidePanelModal.vue'
-import ContactModal from '@/components/Modals/ContactModal.vue'
-import { createResource, Dropdown, Avatar, call } from 'frappe-ui'
-import { ref, computed, h, watch, watchEffect, onMounted } from 'vue'
-import SuccessIcon from '@/components/Icons/SuccessIcon.vue'
-import PhoneIcon from '@/components/Icons/PhoneIcon.vue'
-import Email2Icon from '@/components/Icons/Email2Icon.vue'
+import { createResource, Dropdown, call } from 'frappe-ui'
+import { ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 const router = useRouter()
 
@@ -160,11 +130,13 @@ watch([() => props.sections, () => props.doctype, () => props.objectId], () => {
   _sections.value = props.sections.map((section) => {
     if (section.data !== false) return section
     let params = {
-      target_doctype: section.target_doctype,
       dt: props.doctype,
       name: props.objectId,
+      field: section.reference_field,
       source_doctype: section.source_doctype,
-      target_field: section?.target_field
+      istable: section.istable,
+      target_field: section?.target_field,
+      selected_fields: ["name", section.title_field, ...section?.selected_fields]
     }
 
     return {
@@ -226,16 +198,21 @@ async function removeAssociation(value, section) {
   }
 }
 
+function getSectionLabel(section) {
+  if (section.istable) return `${section.label} (${section?.data?.data?.length})` 
+  return section.label
+}
+
 function showAccordion(object, fields) {
   return fields.some((field) => !field.in_preview && field.in_list_view && object[field.fieldname])
 }
 
-function otherOptions(object,section) {
+function otherOptions(object, section) {
   let options = [
     {
       label: __('Remove'),
       icon: 'trash-2',
-      onClick: () => removeAssociation(object.name,section),
+      onClick: () => removeAssociation(object.name, section),
     },
   ]
 

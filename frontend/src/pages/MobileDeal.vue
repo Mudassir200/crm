@@ -129,7 +129,7 @@
                               @click="
                                 router.push({
                                   name: 'Contact',
-                                  params: { contactId: contact.name },
+                                  params: { name: contact.name },
                                 })
                               "
                             >
@@ -472,7 +472,7 @@ function getParsedFields(sections) {
         field.link = (org) =>
           router.push({
             name: 'Organization',
-            params: { organizationId: org },
+            params: { name: org },
           })
       }
     })

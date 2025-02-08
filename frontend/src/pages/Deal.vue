@@ -422,7 +422,7 @@ function getParsedSections(_sections) {
         field.link = (org) =>
           router.push({
             name: 'Organization',
-            params: { organizationId: org },
+            params: { name: org },
           })
       }
     })

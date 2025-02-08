@@ -104,32 +104,33 @@ def get_right_sidepanel_sections(doctype,type="Right Side Panel"):
 		return []
 
 	layout = []
-	not_allowed_fieldtypes = [
-		"Tab Break",
-		"Section Break",
-		"Column Break",
-	]
 
-	# cards = [{
-	# 	"name": "rc0iohf6o5",
-	# 	"association_card": "Contacts",
-	# 	"section_title": "Contacts",  
-	# 	"source_doctype": "Contact",   # Doctype for show list of records
-	# 	"target_doctype": "CRM Contacts",  # Doctype for show selected record details
-	# }]
 	for card in cards:
-		fields = frappe.get_meta(card.get("target_doctype")).fields
-		fields = [field for field in fields if field.fieldtype not in not_allowed_fieldtypes]
-		
+		card_details = frappe.get_doc("CRM Association Card", card.get("association_card"))
+		fields = frappe.get_meta(card_details.get("source_doctype")).fields
+		selected_fields = json.loads(card_details.get("selected_fields"))
+		selected_fields_keys = [card_details.get("title_field")]
+		for field in selected_fields:
+			selected_fields_keys.append(list(field.keys())[0])
+
+		# selected_fields_keys is sorted by own display order
+		fields = sorted(
+			[field for field in fields if field.fieldname in selected_fields_keys],
+			key=lambda x: selected_fields_keys.index(x.fieldname) if x.fieldname in selected_fields_keys else len(selected_fields_keys)
+		)
+
 		layout.append({
+			"name": card_details.get("name"),
 			"label": card.get("section_title"),
-			"name": card.get("name"),
-			"source_doctype": card.get("source_doctype"),
-			"target_doctype": card.get("target_doctype"),
-			"target_field": card.get("target_field"),
-			"reference_field": card.get("reference_field"),
-			"empty_message": card.get("empty_message"),
-			"route": card.get("route"),
+			"source_doctype": card_details.get("source_doctype"),
+			"target_doctype": card_details.get("target_doctype"),
+			"target_field": card_details.get("target_field"),
+			"reference_field": card_details.get("reference_field"),
+			"title_field": card_details.get("title_field"),
+			"selected_fields": selected_fields_keys,
+			"empty_message": card_details.get("empty_message"),
+			"istable": card_details.get("is_child_table"),
+			"route": card_details.get("route"),
 			"opened": True,
 			"editable": False,
 			"visible": True,

@@ -103,7 +103,7 @@ function handleOrganizationUpdate(doc) {
   if (doc.name && props.options.redirect) {
     router.push({
       name: 'Organization',
-      params: { organizationId: doc.name },
+      params: { name: doc.name },
     })
   } else {
     organization.value?.reload?.()

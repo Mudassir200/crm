@@ -202,7 +202,7 @@ const { getOrganization } = organizationsStore()
 const { getDealStatus } = statusesStore()
 
 const props = defineProps({
-  contactId: {
+  name: {
     type: String,
     required: true,
   },
@@ -217,9 +217,9 @@ const _address = ref({})
 
 const contact = createResource({
   url: 'crm.api.contact.get_contact',
-  cache: ['contact', props.contactId],
+  cache: ['contact', props.name],
   params: {
-    name: props.contactId,
+    name: props.name,
   },
   auto: true,
   transform: (data) => {
@@ -251,7 +251,7 @@ const breadcrumbs = computed(() => {
 
   items.push({
     label: contact.data?.full_name,
-    route: { name: 'Contact', params: { contactId: props.contactId } },
+    route: { name: 'Contact', params: { name: props.name } },
   })
   return items
 })
@@ -273,7 +273,7 @@ function validateFile(file) {
 async function changeContactImage(file) {
   await call('frappe.client.set_value', {
     doctype: 'Contact',
-    name: props.contactId,
+    name: props.name,
     fieldname: 'image',
     value: file?.file_url || '',
   })
@@ -292,7 +292,7 @@ async function deleteContact() {
         async onClick(close) {
           await call('frappe.client.delete', {
             doctype: 'Contact',
-            name: props.contactId,
+            name: props.name,
           })
           close()
           router.push({ name: 'Contacts' })
@@ -319,8 +319,8 @@ const tabs = [
 
 const deals = createResource({
   url: 'crm.api.contact.get_linked_deals',
-  cache: ['deals', props.contactId],
-  params: { contact: props.contactId },
+  cache: ['deals', props.name],
+  params: { contact: props.name },
   auto: true,
 })
 
@@ -549,7 +549,7 @@ async function deleteOption(doctype, name) {
 async function updateField(fieldname, value) {
   await call('frappe.client.set_value', {
     doctype: 'Contact',
-    name: props.contactId,
+    name: props.name,
     fieldname,
     value,
   })
