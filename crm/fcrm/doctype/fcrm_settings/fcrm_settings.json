@@ -7,6 +7,7 @@
  "field_order": [
   "defaults_tab",
   "restore_defaults",
+  "show_fields_change_activity",
   "branding_tab",
   "brand_name",
   "brand_logo",
@@ -56,12 +57,18 @@
    "fieldname": "favicon",
    "fieldtype": "Attach",
    "label": "Favicon"
+  },
+  {
+   "default": "1",
+   "fieldname": "show_fields_change_activity",
+   "fieldtype": "Check",
+   "label": "Show Fields Change Activity"
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2025-01-19 14:23:05.981355",
+ "modified": "2025-02-08 14:16:39.194226",
  "modified_by": "Administrator",
  "module": "FCRM",
  "name": "FCRM Settings",
