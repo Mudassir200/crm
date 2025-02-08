@@ -127,24 +127,24 @@ watch([() => props.sections, () => props.doctype, () => props.objectId], () => {
     return
   }
 
-  _sections.value = props.sections.map((section) => {
-    if (section.data !== false) return section
+  _sections.value = props.sections.map((_section) => {
+    if (_section.data !== false) return _section
     let params = {
       dt: props.doctype,
       name: props.objectId,
-      field: section.reference_field,
-      source_doctype: section.source_doctype,
-      istable: section.istable,
-      target_field: section?.target_field,
-      selected_fields: ["name", section.title_field, ...section?.selected_fields]
+      field: _section.reference_field,
+      source_doctype: _section.source_doctype,
+      istable: _section.istable,
+      target_field: _section?.target_field,
+      selected_fields: ["name", _section.title_field, ..._section?.selected_fields]
     }
 
     return {
-      ...section,
+      ..._section,
       data: createResource({
         url: 'crm.api.utils.get_association_list',
         params: params,
-        cache: [props.doctype, section.target_doctype, props.objectId],
+        cache: [props.doctype, _section.target_doctype, props.objectId],
         auto: true
       })
     }
@@ -152,9 +152,9 @@ watch([() => props.sections, () => props.doctype, () => props.objectId], () => {
 }, { immediate: true })
 
 
-async function addAssociation(value, section) {
+async function addAssociation(value, _section) {
   if (!value) return
-  if (section.data.data?.find((c) => c[section.target_field] === value)) {
+  if (_section.data.data?.find((c) => c[_section.target_field] === value)) {
     createToast({
       title: __('Association already exist!'),
       icon: 'x',
@@ -165,54 +165,54 @@ async function addAssociation(value, section) {
   let d = await call('crm.api.utils.add_association', {
     dt: props.doctype,
     name: props.objectId,
-    field: section.reference_field,
-    target_field: section.target_field,
+    field: _section.reference_field,
+    target_field: _section.target_field,
     value: value
   })
   if (d) {
-    section.data.reload()
+    _section.data.reload()
     createToast({
-      title: __(`${section.source_doctype} added`),
+      title: __(`${_section.source_doctype} added`),
       icon: 'check',
       iconClasses: 'text-ink-green-3',
     })
   }
 }
 
-async function removeAssociation(value, section) {
+async function removeAssociation(value, _section) {
   if (!value) return
   let d = await call('crm.api.utils.remove_association', {
     dt: props.doctype,
     name: props.objectId,
-    field: section.reference_field,
-    target_field: section.target_field,
+    field: _section.reference_field,
+    target_field: _section.target_field,
     value: value
   })
   if (d) {
-    section.data.reload()
+    _section.data.reload()
     createToast({
-      title: __(`${section.source_doctype} removed`),
+      title: __(`${_section.source_doctype} removed`),
       icon: 'check',
       iconClasses: 'text-ink-green-3',
     })
   }
 }
 
-function getSectionLabel(section) {
-  if (section.istable) return `${section.label} (${section?.data?.data?.length})` 
-  return section.label
+function getSectionLabel(_section) {
+  if (_section.istable) return `${_section.label} (${_section?.data?.data?.length})` 
+  return _section.label
 }
 
 function showAccordion(object, fields) {
   return fields.some((field) => !field.in_preview && field.in_list_view && object[field.fieldname])
 }
 
-function otherOptions(object, section) {
+function otherOptions(object, _section) {
   let options = [
     {
       label: __('Remove'),
       icon: 'trash-2',
-      onClick: () => removeAssociation(object.name, section),
+      onClick: () => removeAssociation(object.name, _section),
     },
   ]
 
@@ -220,7 +220,7 @@ function otherOptions(object, section) {
 }
 
 function firstVisibleIndex() {
-  return _sections.value.findIndex((section) => section.visible)
+  return _sections.value.findIndex((_section) => _section.visible)
 }
 </script>
 

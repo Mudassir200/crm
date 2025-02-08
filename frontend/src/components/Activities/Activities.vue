@@ -9,7 +9,15 @@
     :emailBox="emailBox"
     :whatsappBox="whatsappBox"
     :modalRef="modalRef"
-  />
+  >
+  <template #filterActivity>
+    <Button
+        variant="outline"
+        :label="__('Filter Activities')"
+        @click="showFilterModal = true"
+      />
+  </template>
+  </ActivityHeader>
   <FadedScrollableDiv
     :maskHeight="30"
     class="flex flex-col flex-1 overflow-y-auto"
@@ -438,7 +446,13 @@
     v-model="all_activities"
     :doctype="doctype"
     :doc="doc"
-  />
+    />
+  <FilterActivityModal
+      v-model="showFilterModal"
+      :selectedFilter="selectedFilter"
+      :types="filterOptions"
+      @after="(types) => {selectedFilter = types;all_activities.reload()}"
+    />
   <FilesUploader
     v-if="doc.data?.name"
     v-model="showFilesUploader"
@@ -491,7 +505,6 @@ import FilesUploader from '@/components/FilesUploader/FilesUploader.vue'
 import { timeAgo, formatDate, startCase } from '@/utils'
 import { globalStore } from '@/stores/global'
 import { usersStore } from '@/stores/users'
-import { contactsStore } from '@/stores/contacts'
 import { whatsappEnabled } from '@/composables/settings'
 import { capture } from '@/telemetry'
 import { Button, Tooltip, createResource } from 'frappe-ui'
@@ -507,10 +520,10 @@ import {
   onBeforeUnmount,
 } from 'vue'
 import { useRoute } from 'vue-router'
+import FilterActivityModal from '../Modals/FilterActivityModal.vue'
 
 const { makeCall, $socket } = globalStore()
 const { getUser } = usersStore()
-const { getContact, getLeadContact } = contactsStore()
 
 const props = defineProps({
   doctype: {
@@ -533,6 +546,23 @@ const reload_email = ref(false)
 const modalRef = ref(null)
 const showFilesUploader = ref(false)
 
+const showFilterModal = ref(false)
+const selectedFilter = ref(
+  JSON.parse(localStorage.getItem('activity_filters') || '["calls","emails","comments","attachments"]')
+)
+
+watch(selectedFilter, (newValue) => {
+  localStorage.setItem('activity_filters', JSON.stringify(newValue))
+}, { deep: true })
+
+const filterOptions = ref([
+    {name: "Activity", key: "activity"},
+    {name: "Emails", key: "emails"},
+    {name: "Calls", key: "calls"},
+    {name: "Comments", key: "comments"},
+    {name: "Attachments", key: "attachments"},
+])
+
 const title = computed(() => props.tabs?.[tabIndex.value]?.name || 'Activity')
 
 const changeTabTo = (tabName) => {
@@ -548,6 +578,7 @@ const all_activities = createResource({
   cache: ['activity', doc.value.data.name],
   auto: true,
   transform: ([versions, calls, notes, tasks, attachments]) => {
+
     return { versions, calls, notes, tasks, attachments }
   },
 })
@@ -660,7 +691,21 @@ const activities = computed(() => {
       })
     }
   })
-  return sortByCreationDesc(_activities)
+
+  let filteredActivity = _activities.filter((activity)=>{
+    if (title.value != "Activity") return true
+    if(activity.activity_type == "changed" && !selectedFilter.value.includes("activity")) return false
+    else if(activity.activity_type == "attachment_log" && !selectedFilter.value.includes("attachments")) return false
+    else if(activity.activity_type == "incoming_call" && !selectedFilter.value.includes("calls")) return false
+    else if(activity.activity_type == "outgoing_call" && !selectedFilter.value.includes("calls")) return false
+    else if(activity.activity_type == "communication" && !selectedFilter.value.includes("emails")) return false
+    else if(activity.activity_type == "comment" && !selectedFilter.value.includes("comments")) return false
+    else if(activity.activity_type == "whatsapp" && !selectedFilter.value.includes("whatsapp")) return false
+    
+    return true
+  })
+
+  return sortByCreationDesc(filteredActivity)
 })
 
 function sortByCreationDesc(list) {

@@ -59,56 +59,54 @@ def get_deal_activities(name):
 		}
 	)
 
-	show_versions_sctivity = frappe.db.get_single_value('FCRM Settings', 'show_version_activity')
 	docinfo.versions.reverse()
 
-	if show_versions_sctivity: 
-		for version in docinfo.versions:
-			data = json.loads(version.data)
-			if not data.get("changed"):
+	for version in docinfo.versions:
+		data = json.loads(version.data)
+		if not data.get("changed"):
+			continue
+
+		if change := data.get("changed")[0]:
+			field = deal_fields.get(change[0], None)
+
+			if not field or change[0] in avoid_fields or (not change[1] and not change[2]):
 				continue
 
-			if change := data.get("changed")[0]:
-				field = deal_fields.get(change[0], None)
+			field_label = field.get("label") or change[0]
+			field_option = field.get("options") or None
 
-				if not field or change[0] in avoid_fields or (not change[1] and not change[2]):
-					continue
+			activity_type = "changed"
+			data = {
+				"field": change[0],
+				"field_label": field_label,
+				"old_value": change[1],
+				"value": change[2],
+			}
 
-				field_label = field.get("label") or change[0]
-				field_option = field.get("options") or None
-
-				activity_type = "changed"
+			if not change[1] and change[2]:
+				activity_type = "added"
 				data = {
 					"field": change[0],
 					"field_label": field_label,
-					"old_value": change[1],
 					"value": change[2],
 				}
+			elif change[1] and not change[2]:
+				activity_type = "removed"
+				data = {
+					"field": change[0],
+					"field_label": field_label,
+					"value": change[1],
+				}
 
-				if not change[1] and change[2]:
-					activity_type = "added"
-					data = {
-						"field": change[0],
-						"field_label": field_label,
-						"value": change[2],
-					}
-				elif change[1] and not change[2]:
-					activity_type = "removed"
-					data = {
-						"field": change[0],
-						"field_label": field_label,
-						"value": change[1],
-					}
-
-			activity = {
-				"activity_type": activity_type,
-				"creation": version.creation,
-				"owner": version.owner,
-				"data": data,
-				"is_lead": False,
-				"options": field_option,
-			}
-			activities.append(activity)
+		activity = {
+			"activity_type": activity_type,
+			"creation": version.creation,
+			"owner": version.owner,
+			"data": data,
+			"is_lead": False,
+			"options": field_option,
+		}
+		activities.append(activity)
 
 	for comment in docinfo.comments:
 		activity = {
@@ -192,56 +190,54 @@ def get_lead_activities(name):
 		}
 	]
 
-	show_versions_sctivity = frappe.db.get_single_value('FCRM Settings', 'show_version_activity')
 	docinfo.versions.reverse()
 
-	if show_versions_sctivity: 
-		for version in docinfo.versions:
-			data = json.loads(version.data)
-			if not data.get("changed"):
+	for version in docinfo.versions:
+		data = json.loads(version.data)
+		if not data.get("changed"):
+			continue
+
+		if change := data.get("changed")[0]:
+			field = lead_fields.get(change[0], None)
+
+			if not field or change[0] in avoid_fields or (not change[1] and not change[2]):
 				continue
 
-			if change := data.get("changed")[0]:
-				field = lead_fields.get(change[0], None)
+			field_label = field.get("label") or change[0]
+			field_option = field.get("options") or None
 
-				if not field or change[0] in avoid_fields or (not change[1] and not change[2]):
-					continue
+			activity_type = "changed"
+			data = {
+				"field": change[0],
+				"field_label": field_label,
+				"old_value": change[1],
+				"value": change[2],
+			}
 
-				field_label = field.get("label") or change[0]
-				field_option = field.get("options") or None
-
-				activity_type = "changed"
+			if not change[1] and change[2]:
+				activity_type = "added"
 				data = {
 					"field": change[0],
 					"field_label": field_label,
-					"old_value": change[1],
 					"value": change[2],
 				}
+			elif change[1] and not change[2]:
+				activity_type = "removed"
+				data = {
+					"field": change[0],
+					"field_label": field_label,
+					"value": change[1],
+				}
 
-				if not change[1] and change[2]:
-					activity_type = "added"
-					data = {
-						"field": change[0],
-						"field_label": field_label,
-						"value": change[2],
-					}
-				elif change[1] and not change[2]:
-					activity_type = "removed"
-					data = {
-						"field": change[0],
-						"field_label": field_label,
-						"value": change[1],
-					}
-
-			activity = {
-				"activity_type": activity_type,
-				"creation": version.creation,
-				"owner": version.owner,
-				"data": data,
-				"is_lead": True,
-				"options": field_option,
-			}
-			activities.append(activity)
+		activity = {
+			"activity_type": activity_type,
+			"creation": version.creation,
+			"owner": version.owner,
+			"data": data,
+			"is_lead": True,
+			"options": field_option,
+		}
+		activities.append(activity)
 
 	for comment in docinfo.comments:
 		activity = {

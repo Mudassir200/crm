@@ -6,6 +6,7 @@
     <div class="flex h-8 items-center text-xl font-semibold text-ink-gray-8">
       {{ __(title) }}
     </div>
+    <slot name="filterAction" />
     <Button
       v-if="title == 'Emails'"
       variant="solid"
@@ -83,22 +84,25 @@
         <FeatherIcon name="settings" class="h-4 w-4" />
       </Button> -->
     </div>
-    <Dropdown v-else :options="defaultActions" @click.stop>
-      <template v-slot="{ open }">
-        <Button variant="solid" class="flex items-center gap-1">
-          <template #prefix>
-            <FeatherIcon name="plus" class="h-4 w-4" />
-          </template>
-          <span>{{ __('New') }}</span>
-          <template #suffix>
-            <FeatherIcon
-              :name="open ? 'chevron-up' : 'chevron-down'"
-              class="h-4 w-4"
-            />
-          </template>
-        </Button>
-      </template>
-    </Dropdown>
+    <div v-else-if="title == 'Activity'" class="flex gap-2 shrink-0">
+      <slot name="filterActivity" />
+      <Dropdown v-if="title == 'Activity'" :options="defaultActions" @click.stop>
+        <template v-slot="{ open }">
+          <Button variant="solid" class="flex items-center gap-1">
+            <template #prefix>
+              <FeatherIcon name="plus" class="h-4 w-4" />
+            </template>
+            <span>{{ __('New') }}</span>
+            <template #suffix>
+              <FeatherIcon
+                :name="open ? 'chevron-up' : 'chevron-down'"
+                class="h-4 w-4"
+              />
+            </template>
+          </Button>
+        </template>
+      </Dropdown>
+    </div>
   </div>
 </template>
 <script setup>

@@ -185,7 +185,7 @@ import {
   usePageMeta,
 } from 'frappe-ui'
 
-import { ref, computed, h, onMounted, onBeforeUnmount } from 'vue'
+import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useActiveTabManager } from '@/composables/useActiveTabManager'
 import LeftSidePanelLayout from '../components/LeftSidePanelLayout.vue'
