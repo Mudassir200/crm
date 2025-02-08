@@ -41,6 +41,8 @@
           <button
             class="px-4 py-2 text-white bg-blue-700 rounded-sm hover:bg-blue-500 dark:text-white md:dark:bg-blue-500">Sales
             Portal</button>
+          <button
+            class="px-4 py-2 text-gray-900 bg-white rounded-sm hover:bg-blue-500 hover:text-white" @click="logout.submit()">Logout</button>
         </div>
       </div>
       <AppHeader />
@@ -52,4 +54,6 @@
 import CRMLogo from '@/components/Icons/CRMLogo.vue'
 import AppSidebar from '@/components/Layouts/AppSidebar.vue'
 import AppHeader from '@/components/Layouts/AppHeader.vue'
+import { sessionStore } from '@/stores/session'
+const { logout } = sessionStore()
 </script>
