@@ -35,7 +35,7 @@
               {{ organization.data?.name || __('Untitled') }}
             </div>
           </Tooltip>
-          <div v-if="isFieldVisible(leftSidePanelSections,'stage') && deal?.data?.pipeline" class="field flex items-center gap-2 leading-5">
+          <div v-if="isManager() && deal?.data?.pipeline" class="field flex items-center gap-2 leading-5">
             <Tooltip :text="__('Stage')" :hoverDelay="1">
               <div class="shrink-0 truncate text-base text-ink-gray-8">
                 {{ __('Stage:') }}
@@ -49,7 +49,7 @@
                 />
             </div>
           </div>
-          <div v-if="isFieldVisible(leftSidePanelSections,'pipeline')" class="field flex items-center gap-2 leading-5">
+          <div v-if="isManager()" class="field flex items-center gap-2 leading-5">
             <Tooltip :text="__('Pipeline')" :hoverDelay="1">
               <div class="shrink-0 truncate text-base text-ink-gray-8">
                 {{ __('Pipeline:') }}
@@ -161,10 +161,11 @@ import LayoutHeader from '@/components/LayoutHeader.vue'
 import Activities from '@/components/Activities/Activities.vue'
 import OrganizationModal from '@/components/Modals/OrganizationModal.vue'
 import Link from '@/components/Controls/Link.vue'
-import DetailsIcon from '@/components/Icons/DetailsIcon.vue'
 import FilesUploader from '@/components/FilesUploader/FilesUploader.vue'
 import SLASection from '@/components/SLASection.vue'
 import CustomActions from '@/components/CustomActions.vue'
+import { usersStore } from '@/stores/users'
+
 import {
   openWebsite,
   createToast,
@@ -194,6 +195,7 @@ import RightSidePanelLayout from '../components/RightSidePanelLayout.vue'
 
 const { brand } = getSettings()
 const { $dialog, $socket, makeCall } = globalStore()
+const { isManager } = usersStore()
 const route = useRoute()
 const router = useRouter()
 

@@ -556,7 +556,7 @@ watch(selectedFilter, (newValue) => {
 }, { deep: true })
 
 const filterOptions = ref([
-    {name: "Activity", key: "activity"},
+    {name: "Info Updates", key: "activity"},
     {name: "Emails", key: "emails"},
     {name: "Calls", key: "calls"},
     {name: "Comments", key: "comments"},

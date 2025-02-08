@@ -35,7 +35,7 @@ const props = defineProps({
     types: {
         type: Array,
         default: () => [
-            {name: "Activity", key: "activity"},
+            {name: "Info Updates", key: "activity"},
             {name: "Emails", key: "emails"},
             {name: "Calls", key: "calls"},
             {name: "Comments", key: "comments"},
