@@ -59,7 +59,7 @@ def get_deal_activities(name):
 		}
 	)
 
-	show_versions_sctivity = frappe.db.get_single_value('FCRM Settings', 'show_fields_change_activity')
+	show_versions_sctivity = frappe.db.get_single_value('FCRM Settings', 'show_version_activity')
 	docinfo.versions.reverse()
 
 	if show_versions_sctivity: 
@@ -192,7 +192,7 @@ def get_lead_activities(name):
 		}
 	]
 
-	show_versions_sctivity = frappe.db.get_single_value('FCRM Settings', 'show_fields_change_activity')
+	show_versions_sctivity = frappe.db.get_single_value('FCRM Settings', 'show_version_activity')
 	docinfo.versions.reverse()
 
 	if show_versions_sctivity: 
