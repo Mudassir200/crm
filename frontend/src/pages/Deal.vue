@@ -120,14 +120,14 @@
       </div>
     </Resizer>
   </div>
-  <!-- <div v-if="editedDetails" class="p-4 flex gap-3 bottom-0 right-0" style="box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;">
-    <Button variant="solid" @click="updateDeal('save', true)">
+  <div v-if="isDirty" class="p-4 flex gap-3 bottom-0 right-0" style="box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;">
+    <Button variant="solid" @click="updateDealDetails('save')">
       {{ __('Save') }}
     </Button>
-    <Button variant="outline" @click="updateDeal('save_and_close', true)">
+    <Button variant="outline" @click="updateDealDetails('discard')">
       {{ __('Discard') }}
     </Button>
-  </div> -->
+  </div>
   <OrganizationModal v-model="showOrganizationModal" v-model:organization="_organization" :options="{
     redirect: false,
     afterInsert: (doc) => updateField('organization', doc.name),
@@ -177,6 +177,7 @@ import { globalStore } from '@/stores/global'
 import { whatsappEnabled, callEnabled } from '@/composables/settings'
 import {
   createResource,
+  createDocumentResource,
   Tooltip,
   Avatar,
   Tabs,
@@ -204,7 +205,6 @@ const props = defineProps({
 })
 
 const showPipelineModal = ref(false)
-// const editedDetails = ref(false)
 
 const deal = createResource({
   url: 'crm.fcrm.doctype.crm_deal.api.get_deal',
@@ -267,54 +267,6 @@ const showOrganizationModal = ref(false)
 const showFilesUploader = ref(false)
 const _organization = ref({})
 
-function updateDeal(fieldname, value, callback) {
-  value = Array.isArray(fieldname) ? '' : value
-
-  if (validateRequired(fieldname, value)) return
-
-  createResource({
-    url: 'frappe.client.set_value',
-    params: {
-      doctype: 'CRM Deal',
-      name: props.dealId,
-      fieldname,
-      value,
-    },
-    auto: true,
-    onSuccess: () => {
-      deal.reload()
-      reload.value = true
-      createToast({
-        title: __('Deal updated'),
-        icon: 'check',
-        iconClasses: 'text-ink-green-3',
-      })
-      callback?.()
-    },
-    onError: (err) => {
-      createToast({
-        title: __('Error updating deal'),
-        text: __(err.messages?.[0]),
-        icon: 'x',
-        iconClasses: 'text-ink-red-4',
-      })
-    },
-  })
-}
-
-function validateRequired(fieldname, value) {
-  let meta = deal.data.fields_meta || {}
-  if (meta[fieldname]?.reqd && !value) {
-    createToast({
-      title: __('Error Updating Deal'),
-      text: __('{0} is a required field', [meta[fieldname].label]),
-      icon: 'x',
-      iconClasses: 'text-ink-red-4',
-    })
-    return true
-  }
-  return false
-}
 
 usePageMeta(() => {
   return {
@@ -328,11 +280,6 @@ const tabs = computed(() => {
     {
       name: 'Overview',
       label: __('Overview'),
-    },
-    {
-      name: 'Data',
-      label: __('Data'),
-      icon: DetailsIcon,
     },
     {
       name: 'Activity',
@@ -379,6 +326,7 @@ const tabs = computed(() => {
   ]
   return tabOptions.filter((tab) => (tab.condition ? tab.condition() : true))
 })
+
 const { tabIndex } = useActiveTabManager(tabs, 'lastDealTab')
 
 const rightSidePanelSections = createResource({
@@ -449,11 +397,51 @@ function triggerCall() {
   makeCall(mobile_no)
 }
 
-function updateField(name, value, callback) {
-  updateDeal(name, value, () => {
-    deal.data[name] = value
-    callback?.()
+const isDirty = computed(() => {
+  return updateDealData.isDirty
+})
+
+const updateDealData = createDocumentResource({
+    doctype: "CRM Deal",
+    name: props.dealId,
+    auto: true,
+    setValue: {
+      onSuccess: () => {
+        updateDealData.reload()
+        deal.reload()
+        rightSidePanelSections.reload()
+        reload.value = true
+        createToast({
+          title: 'Data Updated',
+          icon: 'check',
+          iconClasses: 'text-ink-green-3',
+        })
+      },
+      onError: (err) => {
+        createToast({
+          title: 'Error',
+          text: err.messages[0],
+          icon: 'x',
+          iconClasses: 'text-red-600',
+        })
+      },
+    },
   })
+
+function updateDealDetails(action){
+  if(action === 'discard'){
+    deal.reload()
+    updateDealData.reload()
+    return
+  }
+  updateDealData.save.submit()
+}
+
+
+function updateField(name, value, callback) {
+  deal.data[name] = value
+  updateDealData.doc[name] = value
+  updateDealData.isDirty = true
 }
 
 async function deleteDeal(name) {

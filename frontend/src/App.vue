@@ -3,7 +3,9 @@
     <router-view />
   </Layout>
   <Dialogs />
-  <Toasts position="top-right"/>
+  <div>
+    <Toasts />
+  </div>
 </template>
 
 <script setup>
