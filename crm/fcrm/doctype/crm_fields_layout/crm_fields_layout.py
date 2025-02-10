@@ -118,7 +118,7 @@ def get_right_sidepanel_sections(doctype,type="Right Side Panel"):
 			[field for field in fields if field.fieldname in selected_fields_keys],
 			key=lambda x: selected_fields_keys.index(x.fieldname) if x.fieldname in selected_fields_keys else len(selected_fields_keys)
 		)
-
+		
 		layout.append({
 			"name": card_details.get("name"),
 			"label": card.get("section_title"),

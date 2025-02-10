@@ -35,21 +35,19 @@
               {{ organization.data?.name || __('Untitled') }}
             </div>
           </Tooltip>
-          <div v-if="isManager() && deal?.data?.pipeline" class="field flex items-center gap-2 leading-5">
+          <div v-if="isFieldVisible(leftSidePanelSections,'stage') && deal?.data?.pipeline" class="field flex items-center gap-2 leading-5">
             <Tooltip :text="__('Stage')" :hoverDelay="1">
               <div class="shrink-0 truncate text-base text-ink-gray-8">
                 {{ __('Stage:') }}
               </div>
             </Tooltip>
             <div class="flex items-center justify-between w-[65%]">
-              <Link class="form-control select-text" 
-                :value="deal.data.stage" doctype="CRM Stage"
-                :dependsFilter="deal?.data?.pipeline ? { 'pipeline': deal.data.pipeline} : {}"
-                @change="(data) => updateField('stage', data)" 
-                />
+              <Link class="form-control select-text" :value="deal.data.stage" doctype="CRM Stage"
+                :dependsFilter="deal?.data?.pipeline ? { 'pipeline': deal.data.pipeline } : {}"
+                @change="(data) => updateField('stage', data)" />
             </div>
           </div>
-          <div v-if="isManager()" class="field flex items-center gap-2 leading-5">
+          <div v-if="isFieldVisible(leftSidePanelSections,'pipeline')" class="field flex items-center gap-2 leading-5">
             <Tooltip :text="__('Pipeline')" :hoverDelay="1">
               <div class="shrink-0 truncate text-base text-ink-gray-8">
                 {{ __('Pipeline:') }}
@@ -57,11 +55,7 @@
             </Tooltip>
             <div class="w-[65%]">
               <Tooltip :text="__('Edit Pipeline')">
-                <Button
-                  variant="ghost"
-                  class="w-100"
-                  @click="showPipelineModal = true"
-                >
+                <Button variant="subtle" class="w-100" @click="showPipelineModal = true">
                   <div class="flex items-center justify-between">
                     <span>{{ deal.data.pipeline }}</span>
                   </div>
@@ -103,8 +97,8 @@
       </div>
       <SLASection v-if="deal.data.sla_status" v-model="deal.data" @updateField="updateField" />
       <div v-if="leftSidePanelSections.data" class="flex flex-1 flex-col justify-between overflow-hidden">
-        <LeftSidePanelLayout v-model="deal.data" :sections="leftSidePanelSections.data"
-          doctype="CRM Deal" @update="updateField" @reload="leftSidePanelSections.reload">
+        <LeftSidePanelLayout v-model="deal.data" :sections="leftSidePanelSections.data" doctype="CRM Deal"
+          @update="updateField" @reload="leftSidePanelSections.reload">
         </LeftSidePanelLayout>
       </div>
     </Resizer>
@@ -114,13 +108,14 @@
     </Tabs>
     <Resizer side="right" class="flex flex-col justify-between border-l">
       <div v-if="rightSidePanelSections.data" class="flex flex-1 flex-col justify-between overflow-hidden">
-        <RightSidePanelLayout :sections="rightSidePanelSections.data" 
-          doctype="CRM Deal" @reload="rightSidePanelSections.reload" :objectId="props.dealId" >
+        <RightSidePanelLayout :sections="rightSidePanelSections.data" doctype="CRM Deal"
+          @reload="rightSidePanelSections.reload" :objectId="props.dealId">
         </RightSidePanelLayout>
       </div>
     </Resizer>
   </div>
-  <div v-if="isDirty" class="p-4 flex gap-3 bottom-0 right-0" style="box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;">
+  <div v-if="isDirty" class="p-4 flex gap-3 bottom-0 right-0"
+    style="box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;">
     <Button variant="solid" @click="updateDealDetails('save')">
       {{ __('Save') }}
     </Button>
@@ -132,13 +127,7 @@
     redirect: false,
     afterInsert: (doc) => updateField('organization', doc.name),
   }" />
-  <PipelineModal v-if="deal?.data" v-model="showPipelineModal" :data="deal.data"
-    :onSave="(doc) => {
-      updateField('pipeline', doc.pipeline, () => {
-        deal.reload()
-        updateField('stage', doc.stage)
-      })
-    }" />
+  <PipelineModal v-if="deal?.data" v-model="showPipelineModal" :data="deal.data" :onSave="(doc) => updatePipelinStage(doc)" />
   <FilesUploader v-if="deal.data?.name" v-model="showFilesUploader" doctype="CRM Deal" :docname="deal.data.name" @after="() => {
     activities?.all_activities?.reload()
     changeTabTo('attachments')
@@ -347,8 +336,9 @@ const leftSidePanelSections = createResource({
   transform: (data) => getParsedSections(data),
 })
 
+
 // Add Condition For Showing Pipeline and Stage field 
-function isFieldVisible(_sections,fieldName) {
+function isFieldVisible(_sections, fieldName) {
   let show = false;
   _sections?.data?.forEach((section) => {
     section.columns[0].fields.forEach((field) => {
@@ -404,34 +394,42 @@ const isDirty = computed(() => {
 })
 
 const updateDealData = createDocumentResource({
-    doctype: "CRM Deal",
-    name: props.dealId,
-    auto: true,
-    setValue: {
-      onSuccess: () => {
-        updateDealData.reload()
-        deal.reload()
-        rightSidePanelSections.reload()
-        reload.value = true
-        createToast({
-          title: 'Data Updated',
-          icon: 'check',
-          iconClasses: 'text-ink-green-3',
-        })
-      },
-      onError: (err) => {
-        createToast({
-          title: 'Error',
-          text: err.messages[0],
-          icon: 'x',
-          iconClasses: 'text-red-600',
-        })
-      },
+  doctype: "CRM Deal",
+  name: props.dealId,
+  auto: true,
+  setValue: {
+    onSuccess: () => {
+      updateDealData.reload()
+      deal.reload()
+      rightSidePanelSections.reload()
+      reload.value = true
+      createToast({
+        title: 'Data Updated',
+        icon: 'check',
+        iconClasses: 'text-ink-green-3',
+      })
     },
-  })
+    onError: (err) => {
+      createToast({
+        title: 'Error',
+        text: err.messages[0],
+        icon: 'x',
+        iconClasses: 'text-red-600',
+      })
+    },
+  },
+})
 
-function updateDealDetails(action){
-  if(action === 'discard'){
+function updatePipelinStage(newdata) {  
+  deal.data['pipeline'] = newdata.pipeline
+  updateDealData.doc['pipeline'] = newdata.pipeline
+  deal.data['stage'] = newdata.stage
+  updateDealData.doc['stage'] = newdata.stage
+  updateDealData.isDirty = true
+}
+
+function updateDealDetails(action) {
+  if (action === 'discard') {
     deal.reload()
     updateDealData.reload()
     return
