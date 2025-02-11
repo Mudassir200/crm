@@ -43,7 +43,7 @@
             </Tooltip>
             <div class="flex items-center justify-between w-[65%]">
               <Link class="form-control select-text" :value="deal.data.stage" doctype="CRM Stage"
-                :dependsFilter="deal?.data?.pipeline ? { 'pipeline': deal.data.pipeline } : {}"
+                :dependsFilter="deal.data?.pipeline ? { 'pipeline': deal.data.pipeline } : {}"
                 @change="(data) => updateField('stage', data)" />
             </div>
           </div>
@@ -114,7 +114,7 @@
       </div>
     </Resizer>
   </div>
-  <div v-if="isDirty" class="p-4 flex gap-3 bottom-0 right-0"
+  <div v-if="isDirty && isDirtyActive" class="p-4 flex gap-3 bottom-0 right-0"
     style="box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;">
     <Button variant="solid" @click="updateDealDetails('save')">
       {{ __('Save') }}
@@ -388,7 +388,7 @@ function triggerCall() {
 
   makeCall(mobile_no)
 }
-
+const isDirtyActive = ref(false)
 const isDirty = computed(() => {
   return updateDealData.isDirty
 })
@@ -437,11 +437,12 @@ function updateDealDetails(action) {
   updateDealData.save.submit()
 }
 
-
 function updateField(name, value, callback) {
   deal.data[name] = value
   updateDealData.doc[name] = value
   updateDealData.isDirty = true
+  isDirtyActive.value = true // Changed from .set to .value
+  console.log(isDirtyActive.value);
 }
 
 async function deleteDeal(name) {

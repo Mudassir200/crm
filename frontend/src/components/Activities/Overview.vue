@@ -175,7 +175,7 @@ const sections = ref([{
             },
             {
                 "title": "Deal Stage",
-                "value": "Ready 0-3 months",
+                "value": "Ready 3-6 Months",
             },
             {
                 "title": "Last Activity Date",
