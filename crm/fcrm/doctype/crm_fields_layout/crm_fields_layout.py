@@ -128,7 +128,7 @@ def get_right_sidepanel_sections(doctype,type="Right Side Panel"):
 			"reference_field": card_details.get("reference_field"),
 			"title_field": card_details.get("title_field"),
 			"selected_fields": selected_fields_keys,
-			"empty_message": card_details.get("empty_message"),
+			"empty_message": card_details.get("empty_section_message"),
 			"istable": card_details.get("is_child_table"),
 			"route": card_details.get("route"),
 			"opened": True,
