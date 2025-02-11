@@ -136,7 +136,7 @@ function redirect() {
   let name = props.note.reference_doctype == 'CRM Deal' ? 'Deal' : 'Lead'
   let params = { leadId: props.note.reference_docname }
   if (name == 'Deal') {
-    params = { dealId: props.note.reference_docname }
+    params = { name: props.note.reference_docname }
   }
   router.push({ name: name, params: params })
 }

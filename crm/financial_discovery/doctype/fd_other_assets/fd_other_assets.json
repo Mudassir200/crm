@@ -1,0 +1,113 @@
+{
+ "actions": [],
+ "allow_import": 1,
+ "allow_rename": 1,
+ "creation": "2024-08-22 11:37:29.799802",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "financial_discovery",
+  "cash_savings",
+  "superannuation",
+  "shares_equities",
+  "column_break_zkhy",
+  "investor",
+  "weekly_savings_capacity",
+  "extra_yearly_contributions"
+ ],
+ "fields": [
+  {
+   "fieldname": "financial_discovery",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Financial Discovery",
+   "options": "FD Financial Discovery",
+   "reqd": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "cash_savings",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Cash Savings",
+   "precision": "2",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_zkhy",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "investor",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Investor",
+   "options": "FD Individual",
+   "reqd": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "weekly_savings_capacity",
+   "fieldtype": "Float",
+   "label": "Weekly Savings Capacity"
+  },
+  {
+   "default": "0",
+   "fieldname": "extra_yearly_contributions",
+   "fieldtype": "Float",
+   "label": "Extra Yearly Contributions",
+   "precision": "2"
+  },
+  {
+   "default": "0",
+   "fieldname": "shares_equities",
+   "fieldtype": "Float",
+   "label": "Shares & Equities",
+   "precision": "2"
+  },
+  {
+   "default": "0",
+   "fieldname": "superannuation",
+   "fieldtype": "Float",
+   "label": "Superannuation",
+   "precision": "2"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2024-11-11 15:59:39.994746",
+ "modified_by": "Administrator",
+ "module": "Financial Discovery",
+ "name": "FD Other Assets",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "OT Customer",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "search_fields": "financial_discovery,cash_savings",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

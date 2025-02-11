@@ -171,7 +171,7 @@ function redirect() {
   let name = props.task.reference_doctype == 'CRM Deal' ? 'Deal' : 'Lead'
   let params = { leadId: props.task.reference_docname }
   if (name == 'Deal') {
-    params = { dealId: props.task.reference_docname }
+    params = { name: props.task.reference_docname }
   }
   router.push({ name: name, params: params })
 }

@@ -1,0 +1,636 @@
+{
+ "actions": [],
+ "allow_import": 1,
+ "allow_rename": 1,
+ "creation": "2024-08-14 19:40:53.424126",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "household_type",
+  "dependant",
+  "tenure_type",
+  "years_lived_in_current_address",
+  "fd_name",
+  "column_break_omuj",
+  "retirement_age_goal",
+  "annual_income_goal",
+  "timeframe",
+  "weekly_income_goal",
+  "crm_deal",
+  "crm_organization",
+  "buyers_section",
+  "buyers",
+  "section_break_ezmp",
+  "total_gross_annual_income",
+  "total_tax",
+  "total_tax_daily",
+  "column_break_ncmj",
+  "total_of_month_in_year_for_pay_tax",
+  "total_lifetime_tax",
+  "real_estate_assets_data_calculations_section",
+  "current_monthly_repayment",
+  "total_annual_mortgage_payments",
+  "current_interest_rate",
+  "how_many_years_pay_for_home_free",
+  "total_home_mortgage",
+  "current_home_debt",
+  "interest_liability_still_payable",
+  "column_break_jzuj",
+  "actual_cost_of_mortgage_including_interest_after_tax",
+  "actual_cost_of_mortgage_including_interest_before_tax",
+  "tax_liabilities_pay_over_off_years",
+  "total_net_annual_income",
+  "portion_of_income_going_to_tax_and_mortgage",
+  "day_of_year_when_start_making_money",
+  "other_assets_section",
+  "investment_property_current",
+  "superannuation_current",
+  "cash_savings_current",
+  "others_current",
+  "total_assets_current",
+  "column_break_dzzi",
+  "investment_property_after_projection_year",
+  "superannuation_after_projection_year",
+  "cash_savings_after_projection_year",
+  "others_after_projection_year",
+  "total_assets__after_projection_year",
+  "liabilities_section",
+  "home_mortgage_current",
+  "liabilities_investment_property_current",
+  "other_debt_current",
+  "total_liabilities_current",
+  "net_wealth_current",
+  "column_break_jxfr",
+  "home_mortgage_after_projection_year",
+  "liabilities_investment_property_after_projection_year",
+  "other_debt_after_projection_year",
+  "total_liabilities_after_projection_year",
+  "net_wealth_after_projection_year",
+  "others_section",
+  "current_eldest_age",
+  "years_retired_up_to_life_expectancy",
+  "years_until_retirement",
+  "lump_sum_needed",
+  "lump_sum_needed_inflation_adjusted",
+  "retirement_shortfall_including_inflation_current",
+  "retirement_shortfall_including_inflation_after_projection_year",
+  "annual_growth_of_superannuation",
+  "user",
+  "column_break_jwsz",
+  "life_expectancy",
+  "passive_income_rate_of_return_in_retirement",
+  "average_annual_inflation_rate",
+  "retirement_income_method",
+  "yearly_savings_required_starting_today",
+  "daily_savings_required_starting_today",
+  "annual_growth_of_investment_property",
+  "annual_growth_of_cash_savings",
+  "annual_growth_of_share_equities"
+ ],
+ "fields": [
+  {
+   "fieldname": "household_type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Household Type",
+   "options": "\nSingle\nCouple",
+   "reqd": 1
+  },
+  {
+   "fieldname": "tenure_type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Tenure Type",
+   "options": "\nRenting\nOwned with Mortgage\nOwned Outright",
+   "reqd": 1
+  },
+  {
+   "fieldname": "years_lived_in_current_address",
+   "fieldtype": "Int",
+   "label": "Years lived in current address",
+   "non_negative": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_omuj",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "retirement_age_goal",
+   "fieldtype": "Int",
+   "label": "Retirement Age Goal",
+   "non_negative": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "annual_income_goal",
+   "fieldtype": "Float",
+   "label": "Annual Income Goal",
+   "reqd": 1
+  },
+  {
+   "fieldname": "weekly_income_goal",
+   "fieldtype": "Float",
+   "label": "Weekly Income Goal",
+   "read_only": 1
+  },
+  {
+   "fieldname": "timeframe",
+   "fieldtype": "Float",
+   "label": "Timeframe",
+   "non_negative": 1,
+   "precision": "2",
+   "reqd": 1
+  },
+  {
+   "fieldname": "buyers_section",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "buyers",
+   "fieldtype": "Table",
+   "label": "Buyers",
+   "options": "FD Household Buyers",
+   "reqd": 1
+  },
+  {
+   "fieldname": "dependant",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Dependants",
+   "options": "\nYes\nNo",
+   "reqd": 1
+  },
+  {
+   "fieldname": "section_break_ezmp",
+   "fieldtype": "Section Break",
+   "label": "Buyer Data Calculations"
+  },
+  {
+   "description": "Total of all buyers (Gross Annual Income)",
+   "fieldname": "total_gross_annual_income",
+   "fieldtype": "Float",
+   "label": "Total Gross Annual Income",
+   "read_only": 1
+  },
+  {
+   "description": "Total = For all buyers -> Tax Rate Fixed Portion + (Gross Annual Income - Tax Rate Low Limit) * Tax Rate Variable Portion;",
+   "fieldname": "total_tax",
+   "fieldtype": "Float",
+   "label": "Total Tax (Yearly)",
+   "read_only": 1
+  },
+  {
+   "description": "=Total Tax (Yearly) / 365",
+   "fieldname": "total_tax_daily",
+   "fieldtype": "Float",
+   "label": "Total Tax (Daily)",
+   "read_only": 1
+  },
+  {
+   "description": "= 12 * (Total Tax (Yearly) / Total Gross Annual Income )",
+   "fieldname": "total_of_month_in_year_for_pay_tax",
+   "fieldtype": "Float",
+   "label": "Total of Month In Year for Pay Tax ",
+   "read_only": 1
+  },
+  {
+   "description": "= Total Gross Annual Income - Total Tax (Yearly) - ( Current Monthly Repayment * 12 )",
+   "fieldname": "total_net_annual_income",
+   "fieldtype": "Float",
+   "label": "Total Net Annual Income",
+   "read_only": 1
+  },
+  {
+   "description": "FD Real Estate Assets  Monthly Repayment if Type = PPOR",
+   "fieldname": "current_monthly_repayment",
+   "fieldtype": "Float",
+   "label": "Current Monthly Repayment",
+   "read_only": 1
+  },
+  {
+   "description": "FD Real Estate Assets Loan Amount if Type = PPOR",
+   "fieldname": "total_home_mortgage",
+   "fieldtype": "Float",
+   "label": "Total Home Mortgage",
+   "read_only": 1
+  },
+  {
+   "description": "FD Real Estate Assets Interest Rate if Type = PPOR",
+   "fieldname": "current_interest_rate",
+   "fieldtype": "Float",
+   "label": "Current Interest Rate",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_ncmj",
+   "fieldtype": "Column Break"
+  },
+  {
+   "description": "Calculate NPER of FD Real Estate Assets if Exist PPOR",
+   "fieldname": "how_many_years_pay_for_home_free",
+   "fieldtype": "Float",
+   "label": "How Many Years Pay (For Home Free)",
+   "read_only": 1
+  },
+  {
+   "fieldname": "real_estate_assets_data_calculations_section",
+   "fieldtype": "Section Break",
+   "label": " Real Estate Assets Data Calculations"
+  },
+  {
+   "fieldname": "column_break_jzuj",
+   "fieldtype": "Column Break"
+  },
+  {
+   "description": "FD Real Estate Assets Loan Amount if Type = PPOR",
+   "fieldname": "current_home_debt",
+   "fieldtype": "Float",
+   "label": "Current Home Debt",
+   "read_only": 1
+  },
+  {
+   "description": "= Current Home Debt - ( Current Monthly Repayment * 12 * How Many Years Pay (For Home Free) )",
+   "fieldname": "interest_liability_still_payable",
+   "fieldtype": "Float",
+   "label": "Interest Liability (still payable)",
+   "read_only": 1
+  },
+  {
+   "description": "=Total Home Mortgage + Interest Liability (still payable)",
+   "fieldname": "actual_cost_of_mortgage_including_interest_after_tax",
+   "fieldtype": "Float",
+   "label": "Actual Cost of Mortgage Including Interest After Tax",
+   "read_only": 1
+  },
+  {
+   "description": "= Actual Cost of Mortgage Including Interest After Tax / (1 - Total Tax (Yearly) / Total Gross Annual Income)",
+   "fieldname": "actual_cost_of_mortgage_including_interest_before_tax",
+   "fieldtype": "Float",
+   "label": "Actual Cost of Mortgage Including Interest Before Tax",
+   "read_only": 1
+  },
+  {
+   "description": "= Actual Cost of Mortgage Including Interest Before Tax - Actual Cost of Mortgage Including Interest After Tax",
+   "fieldname": "tax_liabilities_pay_over_off_years",
+   "fieldtype": "Float",
+   "label": "Tax Liabilities Pay Over off Years",
+   "read_only": 1
+  },
+  {
+   "description": "= Current Monthly Repayment * 12",
+   "fieldname": "total_annual_mortgage_payments",
+   "fieldtype": "Float",
+   "label": "Total Annual Mortgage Payments",
+   "read_only": 1
+  },
+  {
+   "description": "= Total Tax (Yearly) * Timeframe",
+   "fieldname": "total_lifetime_tax",
+   "fieldtype": "Float",
+   "label": "Total Lifetime Tax",
+   "read_only": 1
+  },
+  {
+   "description": "=(Total Annual Mortgage Payments + Total Tax (Yearly)) / Total Gross Annual Income",
+   "fieldname": "portion_of_income_going_to_tax_and_mortgage",
+   "fieldtype": "Float",
+   "label": "Portion of income going to Tax and Mortgage",
+   "read_only": 1
+  },
+  {
+   "fieldname": "day_of_year_when_start_making_money",
+   "fieldtype": "Data",
+   "label": "Day of Year when start making Money",
+   "read_only": 1
+  },
+  {
+   "fieldname": "other_assets_section",
+   "fieldtype": "Section Break",
+   "label": "Assets"
+  },
+  {
+   "description": "Total of other assets superannuation",
+   "fieldname": "superannuation_current",
+   "fieldtype": "Float",
+   "label": "Superannuation (Current)",
+   "read_only": 1
+  },
+  {
+   "fieldname": "superannuation_after_projection_year",
+   "fieldtype": "Float",
+   "label": "Superannuation (After Projection Year)",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_dzzi",
+   "fieldtype": "Column Break"
+  },
+  {
+   "description": "Total of other assets Cash Savings",
+   "fieldname": "cash_savings_current",
+   "fieldtype": "Float",
+   "label": "Cash Savings (Current)",
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "cash_savings_after_projection_year",
+   "fieldtype": "Float",
+   "label": "Cash Savings (After Projection Year)",
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "others_after_projection_year",
+   "fieldtype": "Float",
+   "label": "Others (After Projection Year)",
+   "read_only": 1
+  },
+  {
+   "description": "Total of FD Real Estate Assets Current Value if Type != PPOR",
+   "fieldname": "investment_property_current",
+   "fieldtype": "Float",
+   "label": "Investment Property (Current)",
+   "read_only": 1
+  },
+  {
+   "description": "Total of other assets Shares & Equities ",
+   "fieldname": "others_current",
+   "fieldtype": "Float",
+   "label": "Others (Current)",
+   "read_only": 1
+  },
+  {
+   "fieldname": "investment_property_after_projection_year",
+   "fieldtype": "Float",
+   "label": "Investment Property (After Projection Year)",
+   "read_only": 1
+  },
+  {
+   "description": "Total of other assets current",
+   "fieldname": "total_assets_current",
+   "fieldtype": "Float",
+   "label": "Total Assets (Current)",
+   "read_only": 1
+  },
+  {
+   "description": "Total of other assets After Projection Year",
+   "fieldname": "total_assets__after_projection_year",
+   "fieldtype": "Float",
+   "label": "Total Assets  (After Projection Year)",
+   "read_only": 1
+  },
+  {
+   "fieldname": "liabilities_section",
+   "fieldtype": "Section Break",
+   "label": "Liabilities"
+  },
+  {
+   "description": "Total of FD Real Estate Assets Loan Amount if Type = PPOR",
+   "fieldname": "home_mortgage_current",
+   "fieldtype": "Float",
+   "label": "Home Mortgage (Current)",
+   "read_only": 1
+  },
+  {
+   "description": "Total of FD Real Estate Assets Loan Amount if Type != PPOR",
+   "fieldname": "liabilities_investment_property_current",
+   "fieldtype": "Float",
+   "label": "Investment property (Current) ",
+   "read_only": 1
+  },
+  {
+   "description": "Total of All Liabilities owning",
+   "fieldname": "other_debt_current",
+   "fieldtype": "Float",
+   "label": "Other debt (Current)",
+   "read_only": 1
+  },
+  {
+   "fieldname": "home_mortgage_after_projection_year",
+   "fieldtype": "Float",
+   "label": "Home Mortgage (After Projection Year)",
+   "read_only": 1
+  },
+  {
+   "fieldname": "other_debt_after_projection_year",
+   "fieldtype": "Float",
+   "label": "Other debt (After Projection Year)",
+   "read_only": 1
+  },
+  {
+   "fieldname": "liabilities_investment_property_after_projection_year",
+   "fieldtype": "Float",
+   "label": "Investment property (After Projection Year)",
+   "read_only": 1
+  },
+  {
+   "fieldname": "total_liabilities_current",
+   "fieldtype": "Float",
+   "label": "Total Liabilities (Current)",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_jxfr",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "total_liabilities_after_projection_year",
+   "fieldtype": "Float",
+   "label": "Total Liabilities (After Projection Year)",
+   "read_only": 1
+  },
+  {
+   "fieldname": "net_wealth_current",
+   "fieldtype": "Float",
+   "label": "Net Wealth (Current)",
+   "read_only": 1
+  },
+  {
+   "fieldname": "net_wealth_after_projection_year",
+   "fieldtype": "Float",
+   "label": "Net Wealth (After Projection Year)",
+   "read_only": 1
+  },
+  {
+   "default": "85",
+   "fieldname": "life_expectancy",
+   "fieldtype": "Int",
+   "label": "Life Expectancy",
+   "non_negative": 1
+  },
+  {
+   "fieldname": "others_section",
+   "fieldtype": "Section Break",
+   "label": "Others"
+  },
+  {
+   "fieldname": "years_retired_up_to_life_expectancy",
+   "fieldtype": "Float",
+   "label": "Years Retired (up to Life expectancy)",
+   "read_only": 1
+  },
+  {
+   "fieldname": "current_eldest_age",
+   "fieldtype": "Float",
+   "label": "Current eldest Age",
+   "read_only": 1
+  },
+  {
+   "description": "based on current eldest age",
+   "fieldname": "years_until_retirement",
+   "fieldtype": "Int",
+   "label": "Years until retirement"
+  },
+  {
+   "fieldname": "column_break_jwsz",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "lump_sum_needed",
+   "fieldtype": "Float",
+   "label": "Lump sum needed in Current Year",
+   "read_only": 1
+  },
+  {
+   "default": "3",
+   "fieldname": "average_annual_inflation_rate",
+   "fieldtype": "Percent",
+   "label": "Average annual inflation rate"
+  },
+  {
+   "default": "5",
+   "fieldname": "passive_income_rate_of_return_in_retirement",
+   "fieldtype": "Percent",
+   "label": "Passive income rate of return in retirement"
+  },
+  {
+   "default": "Passive Income",
+   "fieldname": "retirement_income_method",
+   "fieldtype": "Select",
+   "label": "Retirement Income Method",
+   "options": "Passive Income\nLump Sum"
+  },
+  {
+   "fieldname": "lump_sum_needed_inflation_adjusted",
+   "fieldtype": "Float",
+   "label": "Lump sum needed (inflation adjusted)",
+   "read_only": 1
+  },
+  {
+   "fieldname": "retirement_shortfall_including_inflation_current",
+   "fieldtype": "Float",
+   "label": "Retirement shortfall including inflation (Current)",
+   "read_only": 1
+  },
+  {
+   "fieldname": "retirement_shortfall_including_inflation_after_projection_year",
+   "fieldtype": "Float",
+   "label": "Retirement shortfall including inflation (After Projection Year)",
+   "read_only": 1
+  },
+  {
+   "fieldname": "yearly_savings_required_starting_today",
+   "fieldtype": "Float",
+   "label": "Yearly savings required starting today",
+   "read_only": 1
+  },
+  {
+   "description": "for the next all projection days",
+   "fieldname": "daily_savings_required_starting_today",
+   "fieldtype": "Float",
+   "label": "Daily savings required starting today",
+   "read_only": 1
+  },
+  {
+   "fieldname": "fd_name",
+   "fieldtype": "Data",
+   "label": "FD Name",
+   "read_only": 1
+  },
+  {
+   "fieldname": "user",
+   "fieldtype": "Link",
+   "label": "User",
+   "options": "User"
+  },
+  {
+   "default": "7",
+   "fieldname": "annual_growth_of_cash_savings",
+   "fieldtype": "Percent",
+   "label": "Annual Growth of Cash Savings"
+  },
+  {
+   "default": "7",
+   "fieldname": "annual_growth_of_share_equities",
+   "fieldtype": "Percent",
+   "label": "Annual Growth of Shares & Equities"
+  },
+  {
+   "fieldname": "annual_growth_of_investment_property",
+   "fieldtype": "Percent",
+   "label": "Annual Growth of Investment Property"
+  },
+  {
+   "default": "7",
+   "fieldname": "annual_growth_of_superannuation",
+   "fieldtype": "Percent",
+   "label": "Annual Growth of Superannuation"
+  },
+  {
+   "fieldname": "crm_deal",
+   "fieldtype": "Link",
+   "label": "CRM Deal",
+   "options": "CRM Deal"
+  },
+  {
+   "fieldname": "crm_organization",
+   "fieldtype": "Link",
+   "label": "CRM Organization",
+   "options": "CRM Organization"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [
+  {
+   "link_doctype": "FD Real Estate Assets",
+   "link_fieldname": "financial_discovery"
+  },
+  {
+   "link_doctype": "FD Other Assets",
+   "link_fieldname": "financial_discovery"
+  },
+  {
+   "link_doctype": "FD Liabilities",
+   "link_fieldname": "financial_discovery"
+  },
+  {
+   "link_doctype": "FD Monthly Expenses",
+   "link_fieldname": "financial_discovery"
+  }
+ ],
+ "modified": "2025-02-11 10:28:35.914044",
+ "modified_by": "Administrator",
+ "module": "Financial Discovery",
+ "name": "FD Financial Discovery",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "search_fields": "household_type,dependant,annual_income_goal,tenure_type",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

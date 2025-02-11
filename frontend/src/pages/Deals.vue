@@ -21,7 +21,7 @@
     :user="user" :options="{
       getRoute: (row) => ({
         name: 'Deal',
-        params: { dealId: row.name },
+        params: { name: row.name },
         query: { view: route.query.view, viewType: route.params.viewType },
       }),
       onNewClick: (column) => onNewClick(column),

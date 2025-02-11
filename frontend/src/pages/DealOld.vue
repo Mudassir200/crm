@@ -375,7 +375,7 @@ const route = useRoute()
 const router = useRouter()
 
 const props = defineProps({
-  dealId: {
+  name: {
     type: String,
     required: true,
   },
@@ -383,8 +383,8 @@ const props = defineProps({
 
 const deal = createResource({
   url: 'crm.fcrm.doctype.crm_deal.api.get_deal',
-  params: { name: props.dealId },
-  cache: ['deal', props.dealId],
+  params: { name: props.name },
+  cache: ['deal', props.name],
   onSuccess: (data) => {
     if (data.organization) {
       organization.update({
@@ -452,7 +452,7 @@ function updateDeal(fieldname, value, callback) {
     url: 'frappe.client.set_value',
     params: {
       doctype: 'CRM Deal',
-      name: props.dealId,
+      name: props.name,
       fieldname,
       value,
     },
@@ -512,7 +512,7 @@ const breadcrumbs = computed(() => {
 
   items.push({
     label: organization.data?.name || __('Untitled'),
-    route: { name: 'Deal', params: { dealId: deal.data.name } },
+    route: { name: 'Deal', params: { name: deal.data.name } },
   })
   return items
 })
@@ -633,7 +633,7 @@ function contactOptions(contact) {
 
 async function addContact(contact) {
   let d = await call('crm.fcrm.doctype.crm_deal.crm_deal.add_contact', {
-    deal: props.dealId,
+    deal: props.name,
     contact,
   })
   if (d) {
@@ -648,7 +648,7 @@ async function addContact(contact) {
 
 async function removeContact(contact) {
   let d = await call('crm.fcrm.doctype.crm_deal.crm_deal.remove_contact', {
-    deal: props.dealId,
+    deal: props.name,
     contact,
   })
   if (d) {
@@ -663,7 +663,7 @@ async function removeContact(contact) {
 
 async function setPrimaryContact(contact) {
   let d = await call('crm.fcrm.doctype.crm_deal.crm_deal.set_primary_contact', {
-    deal: props.dealId,
+    deal: props.name,
     contact,
   })
   if (d) {
@@ -678,8 +678,8 @@ async function setPrimaryContact(contact) {
 
 const dealContacts = createResource({
   url: 'crm.fcrm.doctype.crm_deal.api.get_deal_contacts',
-  params: { name: props.dealId },
-  cache: ['deal_contacts', props.dealId],
+  params: { name: props.name },
+  cache: ['deal_contacts', props.name],
   auto: true,
   transform: (data) => {
     data.forEach((contact) => {
@@ -691,8 +691,8 @@ const dealContacts = createResource({
 
 const dealProperties = createResource({
   url: 'crm.fcrm.doctype.crm_deal.api.get_deal_property',
-  params: { name: props.dealId },
-  cache: ['deal_properties', props.dealId],
+  params: { name: props.name },
+  cache: ['deal_properties', props.name],
   auto: true,
   transform: (data) => {
     data.forEach((property) => {

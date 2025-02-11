@@ -32,7 +32,7 @@ const routes = [
     component: () => import('@/pages/Deals.vue'),
   },
   {
-    path: '/deals/:dealId',
+    path: '/deals/:name',
     name: 'Deal',
     component: () => import(`@/pages/${handleMobileView('Deal')}.vue`),
     props: true,
@@ -90,6 +90,38 @@ const routes = [
     name: 'Email Template',
     component: () => import('@/pages/EmailTemplate.vue'),
     props: true,
+  },
+  {
+    path: '/financial-discovery/',
+    name: 'FDList',
+    component: () => import('@/pages/FD/FinancialDiscoveryList.vue'),
+    meta: {
+      title: "FD List",
+      isAuth: true
+    }
+  },
+  {
+    path: '/financial-discovery/create',
+    name: 'CreateFD',
+    component: () => import('@/pages/FD/FinancialDiscovery.vue'),
+  },
+  {
+    path: '/financial-discovery/:id',
+    name: 'FDDetails',
+    component: () => import('@/pages/FD/FinancialDiscoveryDetails.vue'),
+    meta: {
+      title: "FD Details",
+      isAuth: true
+    }
+  },
+  {
+    path: '/financial-discovery/edit/:id',
+    name: 'EditFD',
+    component: () => import('@/pages/FD/EditFinancialDiscovery.vue'),
+    meta: {
+      title: "Edit FD",
+      isAuth: true
+    }
   },
   {
     path: '/:invalidpath',

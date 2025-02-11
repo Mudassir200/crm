@@ -453,7 +453,7 @@ function openDealOrLead() {
   if (contact.value.deal) {
     router.push({
       name: 'Deal',
-      params: { dealId: contact.value.deal },
+      params: { name: contact.value.deal },
     })
   } else if (contact.value.lead) {
     router.push({

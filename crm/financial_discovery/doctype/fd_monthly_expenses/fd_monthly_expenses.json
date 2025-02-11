@@ -1,0 +1,84 @@
+{
+ "actions": [],
+ "allow_import": 1,
+ "allow_rename": 1,
+ "creation": "2024-08-21 10:44:16.833106",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "monthly_expneses_section",
+  "financial_discovery",
+  "expense_name",
+  "column_break_zlcb",
+  "amount"
+ ],
+ "fields": [
+  {
+   "fieldname": "amount",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Amount",
+   "reqd": 1
+  },
+  {
+   "fieldname": "financial_discovery",
+   "fieldtype": "Link",
+   "label": "Financial Discovery",
+   "options": "FD Financial Discovery",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_zlcb",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "monthly_expneses_section",
+   "fieldtype": "Section Break",
+   "label": "Monthly Expneses"
+  },
+  {
+   "fieldname": "expense_name",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Expense Name",
+   "options": "Rent\nEst. Living Expenses\nPrivate Healthcare Insurance\nChild Care/Private School\nChild Support",
+   "reqd": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2024-11-11 15:57:28.094703",
+ "modified_by": "Administrator",
+ "module": "Financial Discovery",
+ "name": "FD Monthly Expenses",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "OT Customer",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

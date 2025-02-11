@@ -34,13 +34,14 @@
                 <router-link to="/organizations"
                   class="block py-2 px-3 text-white rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Organizations</router-link>
               </li>
+              <li>
+                <router-link to="/financial-discovery"
+                  class="block py-2 px-3 text-white rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Financial Discovery</router-link>
+              </li>
             </ul>
           </div>
         </div>
         <div class="flex items-center gap-2">
-          <button
-            class="px-4 py-2 text-white bg-blue-700 rounded-sm hover:bg-blue-500 dark:text-white md:dark:bg-blue-500">Sales
-            Portal</button>
           <button
             class="px-4 py-2 text-gray-900 bg-white rounded-sm hover:bg-blue-500 hover:text-white" @click="logout.submit()">Logout</button>
         </div>

@@ -13,6 +13,26 @@ export function createToast(options) {
   })
 }
 
+export function fetch_api(url,method,params){
+  const headers = { 'Accept': 'application/json', 'Content-Type': 'application/json' }
+  
+  return fetch(url, {
+      method: method,
+      headers: headers,
+      body: JSON.stringify(params)
+      
+  })
+  .then(r => r.json())
+  .then(r => {
+      return r
+  })
+}
+
+export function currencyFormat(value = 0, format = 'USD', code='en',min=0,max=2){
+  return value.toLocaleString(code, { style: 'currency', currency: format, minimumFractionDigits: min, maximumFractionDigits:max });
+}
+
+
 export function formatTime(seconds) {
   const days = Math.floor(seconds / (3600 * 24))
   const hours = Math.floor((seconds % (3600 * 24)) / 3600)

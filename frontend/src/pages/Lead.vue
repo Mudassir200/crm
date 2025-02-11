@@ -610,7 +610,7 @@ async function convertToDeal(updated) {
       if (updated) {
         await contacts.reload()
       }
-      router.push({ name: 'Deal', params: { dealId: deal } })
+      router.push({ name: 'Deal', params: { name: deal } })
     }
   }
 }

@@ -221,7 +221,7 @@ function createDeal() {
       capture('deal_created')
       isDealCreating.value = false
       show.value = false
-      router.push({ name: 'Deal', params: { dealId: name } })
+      router.push({ name: 'Deal', params: { name: name } })
     },
     onError(err) {
       isDealCreating.value = false

@@ -1,0 +1,132 @@
+{
+ "actions": [],
+ "allow_import": 1,
+ "allow_rename": 1,
+ "creation": "2025-02-10 16:36:24.913241",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "contact",
+  "first_name",
+  "surname",
+  "date_of_birth",
+  "occupation",
+  "age",
+  "marginal_tax_bracket",
+  "column_break_npca",
+  "gross_annual_income",
+  "length_of_employment_yrs",
+  "employment_type",
+  "untaxed_income",
+  "ownership"
+ ],
+ "fields": [
+  {
+   "fieldname": "first_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "First Name",
+   "reqd": 1
+  },
+  {
+   "fieldname": "surname",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Surname"
+  },
+  {
+   "fieldname": "date_of_birth",
+   "fieldtype": "Date",
+   "label": "Date of Birth"
+  },
+  {
+   "fieldname": "occupation",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Occupation"
+  },
+  {
+   "fieldname": "age",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "Age",
+   "non_negative": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "marginal_tax_bracket",
+   "fieldtype": "Float",
+   "label": "Marginal Tax Bracket"
+  },
+  {
+   "fieldname": "column_break_npca",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "gross_annual_income",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Gross Annual Income (incl. Super)",
+   "reqd": 1
+  },
+  {
+   "fieldname": "length_of_employment_yrs",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "Length of employment (yrs)",
+   "non_negative": 1
+  },
+  {
+   "fieldname": "employment_type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Employment Type",
+   "options": "\nPAYG\nSelf-Employed\nRetired\nUnemployed"
+  },
+  {
+   "fieldname": "untaxed_income",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Untaxed Income"
+  },
+  {
+   "fieldname": "ownership",
+   "fieldtype": "Float",
+   "label": "Ownership"
+  },
+  {
+   "fieldname": "contact",
+   "fieldtype": "Link",
+   "label": "Contact",
+   "options": "Contact"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2025-02-10 19:41:38.451297",
+ "modified_by": "Administrator",
+ "module": "Financial Discovery",
+ "name": "FD Individual",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "search_fields": "surname,occupation,employment_type",
+ "show_title_field_in_link": 1,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "title_field": "first_name"
+}

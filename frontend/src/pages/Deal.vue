@@ -109,7 +109,7 @@
     <Resizer side="right" class="flex flex-col justify-between border-l">
       <div v-if="rightSidePanelSections.data" class="flex flex-1 flex-col justify-between overflow-hidden">
         <RightSidePanelLayout :sections="rightSidePanelSections.data" doctype="CRM Deal"
-          @reload="rightSidePanelSections.reload" :objectId="props.dealId">
+          @reload="rightSidePanelSections.reload" :objectId="props.name">
         </RightSidePanelLayout>
       </div>
     </Resizer>
@@ -189,7 +189,7 @@ const route = useRoute()
 const router = useRouter()
 
 const props = defineProps({
-  dealId: {
+  name: {
     type: String,
     required: true,
   },
@@ -199,8 +199,8 @@ const showPipelineModal = ref(false)
 
 const deal = createResource({
   url: 'crm.fcrm.doctype.crm_deal.api.get_deal',
-  params: { name: props.dealId },
-  cache: ['deal', props.dealId],
+  params: { name: props.name },
+  cache: ['deal', props.name],
   onSuccess: (data) => {
     if (data.organization) {
       organization.update({
@@ -395,7 +395,7 @@ const isDirty = computed(() => {
 
 const updateDealData = createDocumentResource({
   doctype: "CRM Deal",
-  name: props.dealId,
+  name: props.name,
   auto: true,
   setValue: {
     onSuccess: () => {

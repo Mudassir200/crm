@@ -1,0 +1,81 @@
+{
+ "actions": [],
+ "allow_import": 1,
+ "allow_rename": 1,
+ "creation": "2024-08-24 15:12:36.805106",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "low_limit",
+  "high_limit",
+  "column_break_qdyz",
+  "fixed_portion",
+  "variable_portion"
+ ],
+ "fields": [
+  {
+   "fieldname": "low_limit",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Low Limit",
+   "non_negative": 1,
+   "options": "0",
+   "precision": "2",
+   "reqd": 1
+  },
+  {
+   "fieldname": "high_limit",
+   "fieldtype": "Float",
+   "label": "High Limit",
+   "non_negative": 1,
+   "options": "0",
+   "precision": "2",
+   "reqd": 1
+  },
+  {
+   "fieldname": "fixed_portion",
+   "fieldtype": "Float",
+   "label": "Fixed Portion",
+   "non_negative": 1,
+   "precision": "2",
+   "reqd": 1
+  },
+  {
+   "fieldname": "variable_portion",
+   "fieldtype": "Percent",
+   "label": "Variable Portion",
+   "precision": "4",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_qdyz",
+   "fieldtype": "Column Break"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2024-08-28 10:17:08.457217",
+ "modified_by": "Administrator",
+ "module": "Financial Discovery",
+ "name": "FD Tax Rates",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "search_fields": "low_limit,high_limit",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

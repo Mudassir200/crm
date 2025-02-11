@@ -1,0 +1,173 @@
+{
+ "actions": [],
+ "allow_import": 1,
+ "allow_rename": 1,
+ "creation": "2024-08-20 18:54:41.110761",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "financial_discovery",
+  "type",
+  "location",
+  "current_value",
+  "purchase_price",
+  "year_aquired",
+  "ownership_type",
+  "ownership_structure",
+  "column_break_hrla",
+  "weekly_rent_income",
+  "loan_amount",
+  "interest_rate",
+  "lender",
+  "p_io",
+  "fixed_or_var",
+  "monthly_repayment"
+ ],
+ "fields": [
+  {
+   "fieldname": "type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Real Estate Type",
+   "options": "\nPPOR\nInvestment\nSMSF",
+   "reqd": 1
+  },
+  {
+   "fieldname": "current_value",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Current value",
+   "precision": "2",
+   "reqd": 1
+  },
+  {
+   "fieldname": "purchase_price",
+   "fieldtype": "Float",
+   "label": "Purchase Price",
+   "non_negative": 1,
+   "precision": "2",
+   "reqd": 1
+  },
+  {
+   "fieldname": "year_aquired",
+   "fieldtype": "Int",
+   "label": "Year Aquired",
+   "non_negative": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "ownership_type",
+   "fieldtype": "Select",
+   "label": "Ownership Type",
+   "options": "\nPersonal\nSMSF\nTrust\nCompany",
+   "reqd": 1
+  },
+  {
+   "fieldname": "ownership_structure",
+   "fieldtype": "Select",
+   "label": "Ownership Structure",
+   "options": "\nJoint\nIndividual 1\nIndividual 2",
+   "reqd": 1
+  },
+  {
+   "fieldname": "weekly_rent_income",
+   "fieldtype": "Float",
+   "label": "Weekly Rent Income",
+   "precision": "2",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_hrla",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "loan_amount",
+   "fieldtype": "Float",
+   "label": "Loan Amount",
+   "precision": "2",
+   "reqd": 1
+  },
+  {
+   "fieldname": "lender",
+   "fieldtype": "Data",
+   "label": "Lender"
+  },
+  {
+   "fieldname": "interest_rate",
+   "fieldtype": "Percent",
+   "label": "Interest Rate",
+   "precision": "2",
+   "reqd": 1
+  },
+  {
+   "fieldname": "p_io",
+   "fieldtype": "Select",
+   "label": "P&I or IO",
+   "options": "\nP&I\nIO"
+  },
+  {
+   "fieldname": "fixed_or_var",
+   "fieldtype": "Select",
+   "label": "Fixed or Var.",
+   "options": "\nVariable\nFixed"
+  },
+  {
+   "fieldname": "monthly_repayment",
+   "fieldtype": "Float",
+   "label": "Monthly Repayment",
+   "precision": "2",
+   "reqd": 1
+  },
+  {
+   "fieldname": "location",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Location",
+   "reqd": 1
+  },
+  {
+   "fieldname": "financial_discovery",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Financial Discovery",
+   "options": "FD Financial Discovery",
+   "reqd": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2024-11-11 15:58:47.652120",
+ "modified_by": "Administrator",
+ "module": "Financial Discovery",
+ "name": "FD Real Estate Assets",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "OT Customer",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

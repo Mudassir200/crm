@@ -28,7 +28,21 @@ import Menubar from "primevue/menubar";
 import PrimeVue from 'primevue/config';
 import Aura from '@primevue/themes/aura';
 import 'primeicons/primeicons.css'
-// import Button from 'primevue/button'
+import Toast from 'primevue/toast';
+import ToastService from 'primevue/toastservice';
+import Tooltip from 'primevue/tooltip';
+import ProgressSpinner from 'primevue/progressspinner';
+import DataTable from 'primevue/datatable'
+import Column from 'primevue/column'
+import InputText from 'primevue/inputtext'
+import InputNumber from 'primevue/inputnumber'
+import Select from 'primevue/select'
+import DatePicker from 'primevue/datepicker'
+import Panel from 'primevue/panel';
+import InputMask from 'primevue/inputmask'
+import ConfirmDialog from 'primevue/confirmdialog';
+import ConfirmationService from 'primevue/confirmationservice';
+
 
 let globalComponents = {
   Button,
@@ -42,21 +56,39 @@ let globalComponents = {
   FeatherIcon,
 }
 
+
 // create a pinia instance
 let pinia = createPinia()
 
 let app = createApp(App)
 
 setConfig('resourceFetcher', frappeRequest)
+app.directive('tooltip', Tooltip);
+
 app.use(FrappeUI)
 app.use(pinia)
 app.use(router)
 app.use(translationPlugin)
 app.use(posthogPlugin)
+app.use(ToastService);
+app.use(ConfirmationService);
+
+
 for (let key in globalComponents) {
   app.component(key, globalComponents[key])
 }
 app.component("Menubar", Menubar)
+app.component('Toast', Toast);
+app.component('ProgressSpinner', ProgressSpinner);
+app.component('DataTable', DataTable)
+app.component('Column', Column)
+app.component('InputText', InputText)
+app.component('InputNumber', InputNumber)
+app.component('Select', Select)
+app.component('DatePicker', DatePicker)
+app.component('Panel', Panel)
+app.component('InputMask', InputMask)
+app.component('ConfirmDialog', ConfirmDialog);
 
 
 app.use(PrimeVue, {

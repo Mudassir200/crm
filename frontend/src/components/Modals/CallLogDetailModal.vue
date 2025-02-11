@@ -241,7 +241,7 @@ const detailFields = computed(() => {
         } else {
           router.push({
             name: 'Deal',
-            params: { dealId: data._deal },
+            params: { name: data._deal },
           })
         }
       },

@@ -380,7 +380,7 @@ function redirect(doctype, docname) {
   let name = doctype == 'CRM Deal' ? 'Deal' : 'Lead'
   let params = { leadId: docname }
   if (name == 'Deal') {
-    params = { dealId: docname }
+    params = { name: docname }
   }
   router.push({ name: name, params: params })
 }

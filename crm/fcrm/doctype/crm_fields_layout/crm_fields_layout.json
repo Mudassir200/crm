@@ -28,7 +28,7 @@
    "in_list_view": 1,
    "in_standard_filter": 1,
    "label": "Type",
-   "options": "Quick Entry\nSide Panel\nLeft Side Panel\nRight Side Panel\nData Fields\nGrid Row"
+   "options": "Quick Entry\nSide Panel\nLeft Side Panel\nRight Side Panel\nData Fields\nGrid Row\nOverview"
   },
   {
    "fieldname": "section_break_ttpm",
@@ -45,17 +45,17 @@
    "fieldtype": "Column Break"
   },
   {
-   "depends_on": "eval:doc.type == 'Right Side Panel'",
+   "depends_on": "eval:doc.type == 'Right Side Panel' || doc.type == 'Overview'",
    "fieldname": "association_card",
    "fieldtype": "Table",
    "label": "Association Card",
-   "mandatory_depends_on": "eval:doc.type == 'Right Side Panel'",
+   "mandatory_depends_on": "eval:doc.type == 'Right Side Panel' || doc.type == 'Overview'",
    "options": "CRM Fields Layout Cards"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-02-05 16:17:37.678010",
+ "modified": "2025-02-11 15:37:06.461083",
  "modified_by": "Administrator",
  "module": "FCRM",
  "name": "CRM Fields Layout",

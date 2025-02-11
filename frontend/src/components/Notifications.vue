@@ -143,7 +143,7 @@ function getRoute(notification) {
   }
   if (notification.route_name === 'Deal') {
     params = {
-      dealId: notification.reference_name,
+      name: notification.reference_name,
     }
   }
 

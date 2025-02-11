@@ -5,6 +5,7 @@
   <Dialogs />
   <div>
     <Toasts />
+    <Toast />
   </div>
 </template>
 
