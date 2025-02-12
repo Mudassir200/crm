@@ -138,7 +138,66 @@ def get_right_sidepanel_sections(doctype,type="Right Side Panel"):
 			"data":False
 		})
 
+	
+
 	return layout
+
+
+@frappe.whitelist()
+def get_overview_layout(doctype,type="Overview"):
+	tabs = []
+	layout = None
+
+	if frappe.db.exists("CRM Fields Layout", {"dt": doctype, "type": type}):
+		layout = frappe.get_doc("CRM Fields Layout", {"dt": doctype, "type": type})
+
+	if layout and layout.layout:
+		tabs = json.loads(layout.layout)
+
+	if not tabs:
+		tabs = get_default_layout(doctype)
+
+	has_tabs = tabs[0].get("sections") if tabs and tabs[0] else False
+
+	if not has_tabs:
+		tabs = [{"name": "first_tab", "sections": tabs}]
+
+	allowed_fields = []
+	for tab in tabs:
+		for section in tab.get("sections"):
+			if "columns" not in section:
+				continue
+			for column in section.get("columns"):
+				if not column.get("fields"):
+					continue
+				allowed_fields.extend([f.get('field') for f in column.get("fields",[])])
+
+	fields = frappe.get_meta(doctype).fields
+	fields = [field for field in fields if field.fieldname in allowed_fields]
+
+	for tab in tabs:
+		for section in tab.get("sections"):
+			for column in section.get("columns") if section.get("columns") else []:
+				for idx, field in enumerate(column.get("fields", [])):
+					field_obj = next((f for f in fields if f.fieldname == field.get('field')), None)
+					if field_obj:
+						field_obj = field_obj.as_dict()
+						handle_perm_level_restrictions(field_obj, doctype)
+						frappe.log_error('Field', field_obj)
+						field_obj.read_only = 1
+						field_obj['title'] = field.get('title')
+						field_obj['field'] = field.get('field')
+						column["fields"][idx] = field_obj
+					else:
+						field['read_only'] = 1
+						field['fieldname'] = field.get('field')
+						field['fieldtype'] = 'Datetime'
+						field['label'] = field.get('title')
+
+
+
+
+	return tabs or []
 
 
 def handle_perm_level_restrictions(field, doctype, parent_doctype=None):
