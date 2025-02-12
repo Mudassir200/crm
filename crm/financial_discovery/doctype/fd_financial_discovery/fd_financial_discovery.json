@@ -126,12 +126,14 @@
    "fieldname": "annual_income_goal",
    "fieldtype": "Float",
    "label": "Annual Income Goal",
+   "options": "Currency",
    "reqd": 1
   },
   {
    "fieldname": "weekly_income_goal",
    "fieldtype": "Float",
    "label": "Weekly Income Goal",
+   "options": "Currency",
    "read_only": 1
   },
   {
@@ -171,6 +173,7 @@
    "fieldname": "total_gross_annual_income",
    "fieldtype": "Float",
    "label": "Total Gross Annual Income",
+   "options": "Currency",
    "read_only": 1
   },
   {
@@ -178,6 +181,7 @@
    "fieldname": "total_tax",
    "fieldtype": "Float",
    "label": "Total Tax (Yearly)",
+   "options": "Currency",
    "read_only": 1
   },
   {
@@ -185,6 +189,7 @@
    "fieldname": "total_tax_daily",
    "fieldtype": "Float",
    "label": "Total Tax (Daily)",
+   "options": "Currency",
    "read_only": 1
   },
   {
@@ -192,6 +197,7 @@
    "fieldname": "total_of_month_in_year_for_pay_tax",
    "fieldtype": "Float",
    "label": "Total of Month In Year for Pay Tax ",
+   "options": "Currency",
    "read_only": 1
   },
   {
@@ -199,6 +205,7 @@
    "fieldname": "total_net_annual_income",
    "fieldtype": "Float",
    "label": "Total Net Annual Income",
+   "options": "Currency",
    "read_only": 1
   },
   {
@@ -206,6 +213,7 @@
    "fieldname": "current_monthly_repayment",
    "fieldtype": "Float",
    "label": "Current Monthly Repayment",
+   "options": "Currency",
    "read_only": 1
   },
   {
@@ -213,6 +221,7 @@
    "fieldname": "total_home_mortgage",
    "fieldtype": "Float",
    "label": "Total Home Mortgage",
+   "options": "Currency",
    "read_only": 1
   },
   {
@@ -220,6 +229,7 @@
    "fieldname": "current_interest_rate",
    "fieldtype": "Float",
    "label": "Current Interest Rate",
+   "options": "Currency",
    "read_only": 1
   },
   {
@@ -231,6 +241,7 @@
    "fieldname": "how_many_years_pay_for_home_free",
    "fieldtype": "Float",
    "label": "How Many Years Pay (For Home Free)",
+   "options": "Currency",
    "read_only": 1
   },
   {
@@ -247,6 +258,7 @@
    "fieldname": "current_home_debt",
    "fieldtype": "Float",
    "label": "Current Home Debt",
+   "options": "Currency",
    "read_only": 1
   },
   {
@@ -254,6 +266,7 @@
    "fieldname": "interest_liability_still_payable",
    "fieldtype": "Float",
    "label": "Interest Liability (still payable)",
+   "options": "Currency",
    "read_only": 1
   },
   {
@@ -261,6 +274,7 @@
    "fieldname": "actual_cost_of_mortgage_including_interest_after_tax",
    "fieldtype": "Float",
    "label": "Actual Cost of Mortgage Including Interest After Tax",
+   "options": "Currency",
    "read_only": 1
   },
   {
@@ -268,6 +282,7 @@
    "fieldname": "actual_cost_of_mortgage_including_interest_before_tax",
    "fieldtype": "Float",
    "label": "Actual Cost of Mortgage Including Interest Before Tax",
+   "options": "Currency",
    "read_only": 1
   },
   {
@@ -275,6 +290,7 @@
    "fieldname": "tax_liabilities_pay_over_off_years",
    "fieldtype": "Float",
    "label": "Tax Liabilities Pay Over off Years",
+   "options": "Currency",
    "read_only": 1
   },
   {
@@ -282,6 +298,7 @@
    "fieldname": "total_annual_mortgage_payments",
    "fieldtype": "Float",
    "label": "Total Annual Mortgage Payments",
+   "options": "Currency",
    "read_only": 1
   },
   {
@@ -289,6 +306,7 @@
    "fieldname": "total_lifetime_tax",
    "fieldtype": "Float",
    "label": "Total Lifetime Tax",
+   "options": "Currency",
    "read_only": 1
   },
   {
@@ -296,6 +314,7 @@
    "fieldname": "portion_of_income_going_to_tax_and_mortgage",
    "fieldtype": "Float",
    "label": "Portion of income going to Tax and Mortgage",
+   "options": "Currency",
    "read_only": 1
   },
   {
@@ -314,12 +333,14 @@
    "fieldname": "superannuation_current",
    "fieldtype": "Float",
    "label": "Superannuation (Current)",
+   "options": "Currency",
    "read_only": 1
   },
   {
    "fieldname": "superannuation_after_projection_year",
    "fieldtype": "Float",
    "label": "Superannuation (After Projection Year)",
+   "options": "Currency",
    "read_only": 1
   },
   {
@@ -331,6 +352,7 @@
    "fieldname": "cash_savings_current",
    "fieldtype": "Float",
    "label": "Cash Savings (Current)",
+   "options": "Currency",
    "read_only": 1
   },
   {
@@ -338,6 +360,7 @@
    "fieldname": "cash_savings_after_projection_year",
    "fieldtype": "Float",
    "label": "Cash Savings (After Projection Year)",
+   "options": "Currency",
    "read_only": 1
   },
   {
@@ -345,6 +368,7 @@
    "fieldname": "others_after_projection_year",
    "fieldtype": "Float",
    "label": "Others (After Projection Year)",
+   "options": "Currency",
    "read_only": 1
   },
   {
@@ -352,6 +376,7 @@
    "fieldname": "investment_property_current",
    "fieldtype": "Float",
    "label": "Investment Property (Current)",
+   "options": "Currency",
    "read_only": 1
   },
   {
@@ -359,12 +384,14 @@
    "fieldname": "others_current",
    "fieldtype": "Float",
    "label": "Others (Current)",
+   "options": "Currency",
    "read_only": 1
   },
   {
    "fieldname": "investment_property_after_projection_year",
    "fieldtype": "Float",
    "label": "Investment Property (After Projection Year)",
+   "options": "Currency",
    "read_only": 1
   },
   {
@@ -372,6 +399,7 @@
    "fieldname": "total_assets_current",
    "fieldtype": "Float",
    "label": "Total Assets (Current)",
+   "options": "Currency",
    "read_only": 1
   },
   {
@@ -379,6 +407,7 @@
    "fieldname": "total_assets__after_projection_year",
    "fieldtype": "Float",
    "label": "Total Assets  (After Projection Year)",
+   "options": "Currency",
    "read_only": 1
   },
   {
@@ -391,6 +420,7 @@
    "fieldname": "home_mortgage_current",
    "fieldtype": "Float",
    "label": "Home Mortgage (Current)",
+   "options": "Currency",
    "read_only": 1
   },
   {
@@ -398,6 +428,7 @@
    "fieldname": "liabilities_investment_property_current",
    "fieldtype": "Float",
    "label": "Investment property (Current) ",
+   "options": "Currency",
    "read_only": 1
   },
   {
@@ -405,30 +436,35 @@
    "fieldname": "other_debt_current",
    "fieldtype": "Float",
    "label": "Other debt (Current)",
+   "options": "Currency",
    "read_only": 1
   },
   {
    "fieldname": "home_mortgage_after_projection_year",
    "fieldtype": "Float",
    "label": "Home Mortgage (After Projection Year)",
+   "options": "Currency",
    "read_only": 1
   },
   {
    "fieldname": "other_debt_after_projection_year",
    "fieldtype": "Float",
    "label": "Other debt (After Projection Year)",
+   "options": "Currency",
    "read_only": 1
   },
   {
    "fieldname": "liabilities_investment_property_after_projection_year",
    "fieldtype": "Float",
    "label": "Investment property (After Projection Year)",
+   "options": "Currency",
    "read_only": 1
   },
   {
    "fieldname": "total_liabilities_current",
    "fieldtype": "Float",
    "label": "Total Liabilities (Current)",
+   "options": "Currency",
    "read_only": 1
   },
   {
@@ -439,18 +475,21 @@
    "fieldname": "total_liabilities_after_projection_year",
    "fieldtype": "Float",
    "label": "Total Liabilities (After Projection Year)",
+   "options": "Currency",
    "read_only": 1
   },
   {
    "fieldname": "net_wealth_current",
    "fieldtype": "Float",
    "label": "Net Wealth (Current)",
+   "options": "Currency",
    "read_only": 1
   },
   {
    "fieldname": "net_wealth_after_projection_year",
    "fieldtype": "Float",
    "label": "Net Wealth (After Projection Year)",
+   "options": "Currency",
    "read_only": 1
   },
   {
@@ -491,6 +530,7 @@
    "fieldname": "lump_sum_needed",
    "fieldtype": "Float",
    "label": "Lump sum needed in Current Year",
+   "options": "Currency",
    "read_only": 1
   },
   {
@@ -516,24 +556,28 @@
    "fieldname": "lump_sum_needed_inflation_adjusted",
    "fieldtype": "Float",
    "label": "Lump sum needed (inflation adjusted)",
+   "options": "Currency",
    "read_only": 1
   },
   {
    "fieldname": "retirement_shortfall_including_inflation_current",
    "fieldtype": "Float",
    "label": "Retirement shortfall including inflation (Current)",
+   "options": "Currency",
    "read_only": 1
   },
   {
    "fieldname": "retirement_shortfall_including_inflation_after_projection_year",
    "fieldtype": "Float",
    "label": "Retirement shortfall including inflation (After Projection Year)",
+   "options": "Currency",
    "read_only": 1
   },
   {
    "fieldname": "yearly_savings_required_starting_today",
    "fieldtype": "Float",
    "label": "Yearly savings required starting today",
+   "options": "Currency",
    "read_only": 1
   },
   {
@@ -541,6 +585,7 @@
    "fieldname": "daily_savings_required_starting_today",
    "fieldtype": "Float",
    "label": "Daily savings required starting today",
+   "options": "Currency",
    "read_only": 1
   },
   {
@@ -610,7 +655,7 @@
    "link_fieldname": "financial_discovery"
   }
  ],
- "modified": "2025-02-11 10:28:35.914044",
+ "modified": "2025-02-12 17:28:05.916220",
  "modified_by": "Administrator",
  "module": "Financial Discovery",
  "name": "FD Financial Discovery",

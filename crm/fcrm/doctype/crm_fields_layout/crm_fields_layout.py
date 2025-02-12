@@ -154,6 +154,9 @@ def get_overview_layout(doctype,type="Overview"):
 	if layout and layout.layout:
 		tabs = json.loads(layout.layout)
 
+	if type == "Financial Discovery":
+		doctype = layout.get('reference_doctype')
+		
 	if not tabs:
 		tabs = get_default_layout(doctype)
 
@@ -193,8 +196,6 @@ def get_overview_layout(doctype,type="Overview"):
 						field['fieldname'] = field.get('field')
 						field['fieldtype'] = 'Datetime'
 						field['label'] = field.get('title')
-
-
 
 
 	return tabs or []

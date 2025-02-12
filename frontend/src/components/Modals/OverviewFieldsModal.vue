@@ -35,7 +35,7 @@
           <FieldLayoutEditor
             v-if="!preview"
             :tabs="tabs.data"
-            :doctype="_doctype"
+            :doctype="fieldsDoctype"
           />
           <FieldLayout
             v-else
@@ -61,6 +61,14 @@ const props = defineProps({
     type: String,
     default: 'CRM Lead',
   },
+  fieldsDoctype: {
+    type: String,
+    default: 'CRM Lead',
+  },
+  type: {
+    type: String,
+    default: 'Overview',
+  },
 })
 
 const emit = defineEmits(['reload'])
@@ -72,7 +80,7 @@ const dirty = ref(false)
 const preview = ref(false)
 
 function getParams() {
-  return { doctype: _doctype.value, type: 'Overview' }
+  return { doctype: _doctype.value, type: props.type }
 }
 
 const tabs = createResource({
@@ -126,7 +134,7 @@ function saveChanges() {
     'crm.fcrm.doctype.crm_fields_layout.crm_fields_layout.save_fields_layout',
     {
       doctype: _doctype.value,
-      type: 'Overview',
+      type: props.type,
       layout: JSON.stringify(_tabs),
     },
   ).then(() => {

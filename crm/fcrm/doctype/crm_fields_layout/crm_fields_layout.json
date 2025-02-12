@@ -11,7 +11,8 @@
   "type",
   "section_break_ttpm",
   "layout",
-  "association_card"
+  "association_card",
+  "reference_doctype"
  ],
  "fields": [
   {
@@ -28,7 +29,7 @@
    "in_list_view": 1,
    "in_standard_filter": 1,
    "label": "Type",
-   "options": "Quick Entry\nSide Panel\nLeft Side Panel\nRight Side Panel\nData Fields\nGrid Row\nOverview"
+   "options": "Quick Entry\nSide Panel\nLeft Side Panel\nRight Side Panel\nData Fields\nGrid Row\nOverview\nFinancial Discovery"
   },
   {
    "fieldname": "section_break_ttpm",
@@ -45,17 +46,26 @@
    "fieldtype": "Column Break"
   },
   {
-   "depends_on": "eval:doc.type == 'Right Side Panel' || doc.type == 'Overview'",
+   "depends_on": "eval:doc.type == 'Right Side Panel'",
    "fieldname": "association_card",
    "fieldtype": "Table",
    "label": "Association Card",
-   "mandatory_depends_on": "eval:doc.type == 'Right Side Panel' || doc.type == 'Overview'",
+   "mandatory_depends_on": "eval:doc.type == 'Right Side Panel'",
    "options": "CRM Fields Layout Cards"
+  },
+  {
+   "depends_on": "eval:doc.type == 'Financial Discovery'",
+   "fieldname": "reference_doctype",
+   "fieldtype": "Link",
+   "label": "Reference Doctype",
+   "link_filters": "[[\"DocType\",\"istable\",\"=\",0]]",
+   "mandatory_depends_on": "eval:doc.type == 'Financial Discovery'",
+   "options": "DocType"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-02-11 15:37:06.461083",
+ "modified": "2025-02-12 16:54:30.486261",
  "modified_by": "Administrator",
  "module": "FCRM",
  "name": "CRM Fields Layout",
