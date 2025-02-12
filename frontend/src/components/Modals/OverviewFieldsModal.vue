@@ -106,7 +106,11 @@ function saveChanges() {
   let _tabs = JSON.parse(JSON.stringify(tabs.data))
   _tabs.forEach((tab) => {
     if (!tab.sections) return
-    tab.sections.forEach((section) => {
+    tab.sections.forEach((section, sectionIndex) => {
+      section.visible = true 
+      if (sectionIndex === 0) {
+        section.editable = true 
+      }
       section.columns.forEach((column) => {
         if (!column.fields) return
         column.fields = column.fields.map(
