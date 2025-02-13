@@ -59,6 +59,7 @@
 import { currencyFormat,fetch_api } from '@/utils'
 import Button from 'primevue/button';
 import moment from 'moment';
+import { useLoadingStore } from "@/stores/loading"; 
 
 export default {
     name: 'FinancialDiscoveryList',
@@ -78,11 +79,15 @@ export default {
             return moment(value).format('DD/MM/YYYY hh:mm:ss a')
         },
         async getFinancialDiscoveryList() {
+            const loadingStore = useLoadingStore();
+            loadingStore.setLoading(true);
+
             let url = "/api/method/crm.financial_discovery.api.financial_discovery.get_financial_discoveries"
             let res = await fetch_api(url, "POST", {});
             if (res?.message) {
                 this.financial_discoveries = res.message;
             }
+            loadingStore.setLoading(false);
         }
     },
     mounted() {

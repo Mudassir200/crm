@@ -17,7 +17,6 @@
   "close_date",
   "deal_owner",
   "pipeline",
-  "stage",
   "contacts_tab",
   "contacts",
   "contact",
@@ -57,7 +56,9 @@
   "first_response_time",
   "first_responded_on",
   "log_tab",
-  "status_change_log"
+  "status_change_log",
+  "stage_fields_tab",
+  "stage"
  ],
  "fields": [
   {
@@ -359,11 +360,16 @@
    "label": "Stage",
    "options": "CRM Stage",
    "reqd": 1
+  },
+  {
+   "fieldname": "stage_fields_tab",
+   "fieldtype": "Tab Break",
+   "label": "Stage Fields"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-02-10 11:06:48.102796",
+ "modified": "2025-02-12 19:31:05.438636",
  "modified_by": "Administrator",
  "module": "FCRM",
  "name": "CRM Deal",

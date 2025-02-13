@@ -150,12 +150,14 @@ import { useRouter, useRoute } from 'vue-router'
 import Button from 'primevue/button'
 import { createResource } from 'frappe-ui'
 import { createToast } from '@/utils'
+import { useLoadingStore } from "@/stores/loading"; 
 
 const route = useRoute()
 const router = useRouter()
 const loading = ref(false)
 const maxDate = ref(new Date())
 const isSubmitedForm = ref(false)
+const loadingStore = useLoadingStore();
 
 const hh_info = reactive({
     household_type: { label: "Single", value: "Single" },
@@ -317,6 +319,8 @@ const organizationBuyers = createResource({
 })
 
 async function get_buyer_details() {
+    
+    
     let org_buyers = []
 
     if (dealname.value) {
@@ -354,6 +358,7 @@ async function get_buyer_details() {
             hh_info.household_type = { label: "Couple", value: "Couple" }
         }
     }
+    loadingStore.setLoading(false);
 }
 
 const submit = async () => {

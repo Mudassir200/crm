@@ -181,12 +181,14 @@ import { useActiveTabManager } from '@/composables/useActiveTabManager'
 import LeftSidePanelLayout from '../components/LeftSidePanelLayout.vue'
 import PipelineModal from '../components/Modals/PipelineModal.vue'
 import RightSidePanelLayout from '../components/RightSidePanelLayout.vue'
+import { useLoadingStore } from "@/stores/loading";
 
 const { brand } = getSettings()
 const { $dialog, $socket, makeCall } = globalStore()
 const { isManager } = usersStore()
 const route = useRoute()
 const router = useRouter()
+const loadingStore = useLoadingStore();
 
 const props = defineProps({
   name: {
@@ -225,6 +227,16 @@ const deal = createResource({
       },
       call,
     })
+    loadingStore.setLoading(false); // Stop loading after data is fetched
+  },
+  onError: (error) => {
+    loadingStore.setLoading(false); 
+    createToast({
+        title: 'Error',
+        text: error.messages[0],
+        icon: 'x',
+        iconClasses: 'text-red-600',
+      })
   },
 })
 
@@ -234,6 +246,7 @@ const organization = createResource({
 })
 
 onMounted(() => {
+  loadingStore.setLoading(true); // Start loading when component mounts
   $socket.on('crm_customer_created', () => {
     createToast({
       title: __('Customer created successfully'),
@@ -244,6 +257,7 @@ onMounted(() => {
 
   if (deal.data) {
     organization.data = deal.data._organizationObj
+    loadingStore.setLoading(false); // Stop loading if deal data is already available
     return
   }
   deal.fetch()
@@ -432,6 +446,7 @@ function updateDealDetails(action) {
   if (action === 'discard') {
     deal.reload()
     updateDealData.reload()
+    updateDealData.isDirty = false
     return
   }
   updateDealData.save.submit()

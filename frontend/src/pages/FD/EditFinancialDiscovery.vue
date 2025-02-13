@@ -136,6 +136,7 @@
 <script>
 import { currencyFormat,fetch_api } from '@/utils'
 import Button from 'primevue/button';
+import { useLoadingStore } from "@/stores/loading"; 
 
 export default {
   name: "EditFD",
@@ -325,6 +326,9 @@ export default {
       }
     },
     async get_fdDetails() {
+      const loadingStore = useLoadingStore();
+      loadingStore.setLoading(true);
+
       let params = {
         id: this.$route.params.id,
       };
@@ -360,6 +364,7 @@ export default {
         this.$toast.add({ severity: 'error', summary: 'Error', detail: "Financial Discovery Not Found", life: 5000 });
         this.$router.push({ name: "CreateFD" })
       }
+      loadingStore.setLoading(false);
     },
     calculateAge(date_of_birth) {
       const birthDate = new Date(date_of_birth);

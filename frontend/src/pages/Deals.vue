@@ -193,6 +193,7 @@ import { formatDate, timeAgo, website, formatTime } from '@/utils'
 import { Tooltip, Avatar, Dropdown } from 'frappe-ui'
 import { useRoute } from 'vue-router'
 import { ref, reactive, computed, h } from 'vue'
+import { useLoadingStore } from "@/stores/loading"; 
 
 const { getFormattedPercent, getFormattedFloat, getFormattedCurrency } =
   getMeta('CRM Deal')
@@ -200,7 +201,7 @@ const { makeCall } = globalStore()
 const { getUser } = usersStore()
 const { getOrganization } = organizationsStore()
 const { getDealStatus } = statusesStore()
-
+const loadingStore = useLoadingStore();
 const route = useRoute()
 
 const dealsListView = ref(null)
@@ -229,7 +230,12 @@ function getRow(name, field) {
 
 // Rows
 const rows = computed(() => {
-  if (!deals.value?.data?.data) return []
+  if (!deals.value?.data?.data) {
+    loadingStore.setLoading(false);
+    return [];
+  }
+  loadingStore.setLoading(false);
+  
   if (deals.value.data.view_type === 'group_by') {
     if (!deals.value?.data.group_by_field?.fieldname) return []
     return getGroupedByRows(

@@ -318,6 +318,7 @@ import {
 import { ref, computed, onMounted, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useActiveTabManager } from '@/composables/useActiveTabManager'
+import { useLoadingStore } from "@/stores/loading"; 
 
 const { brand } = getSettings()
 const { $dialog, $socket, makeCall } = globalStore()
@@ -325,6 +326,7 @@ const { getContactByName, contacts } = contactsStore()
 const { statusOptions, getLeadStatus } = statusesStore()
 const route = useRoute()
 const router = useRouter()
+const loadingStore = useLoadingStore();
 
 const props = defineProps({
   leadId: {
@@ -338,6 +340,7 @@ const lead = createResource({
   params: { name: props.leadId },
   cache: ['lead', props.leadId],
   onSuccess: (data) => {
+    loadingStore.setLoading(false); 
     setupAssignees(lead)
     setupCustomizations(lead, {
       doc: data,
@@ -350,6 +353,15 @@ const lead = createResource({
       resource: { lead, sections },
       call,
     })
+  },
+  onError: (error) => {
+    loadingStore.setLoading(false); 
+    createToast({
+        title: 'Error',
+        text: error.messages[0],
+        icon: 'x',
+        iconClasses: 'text-red-600',
+      })
   },
 })
 

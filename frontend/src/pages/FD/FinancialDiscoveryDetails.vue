@@ -6,7 +6,7 @@
             </div>
         </div>
         <section class="top-content sticky top-0 z-10 bg-white py-5 mb-5" :class="{'shadow-md' : isScrolled}">
-            <div class="    ">
+            <div class="">
                 <TopContent :financial_discovery="financial_discovery" @getFinancialDiscovery="getData" />
             </div>
         </section>
@@ -45,6 +45,7 @@ import OtherAssetsTable from '@/components/FD/OtherAssetsTable.vue'
 import LiabilitiesTable from '@/components/FD/LiabilitiesTable.vue'
 import FinanceDiscovery from '@/components/FD/FinanceDiscovery.vue'
 import {fetch_api} from '@/utils'
+import { useLoadingStore } from "@/stores/loading"; 
 
 export default {
     name: 'FDDetails',
@@ -72,6 +73,8 @@ export default {
     }, 
     methods: {
         async getData() {
+            const loadingStore = useLoadingStore();
+            loadingStore.setLoading(true);
             this.loading = true
             let params = {
                 id: this.$route.params.id
@@ -92,6 +95,7 @@ export default {
                 this.$router.push({ name: "CreateFD" })
             }
             this.loading = false
+            loadingStore.setLoading(false);
         },
         async getRealEstateAssets() {
             let params = { id: this.$route.params.id }

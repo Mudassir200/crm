@@ -88,6 +88,7 @@ import { organizationsStore } from '@/stores/organizations.js'
 import { formatDate, timeAgo } from '@/utils'
 import { call } from 'frappe-ui'
 import { ref, computed } from 'vue'
+import { useLoadingStore } from "@/stores/loading"; 
 
 const { getFormattedPercent, getFormattedFloat, getFormattedCurrency } =
   getMeta('Contact')
@@ -96,7 +97,7 @@ const { getOrganization } = organizationsStore()
 const showContactModal = ref(false)
 const showQuickEntryModal = ref(false)
 const showAddressModal = ref(false)
-
+const loadingStore = useLoadingStore();
 const contactsListView = ref(null)
 
 // contacts data is loaded in the ViewControls component
@@ -108,6 +109,7 @@ const updatedPageCount = ref(20)
 const viewControls = ref(null)
 
 const rows = computed(() => {
+  loadingStore.setLoading(false); 
   if (
     !contacts.value?.data?.data ||
     !['list', 'group_by'].includes(contacts.value.data.view_type)

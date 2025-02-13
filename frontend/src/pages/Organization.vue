@@ -203,6 +203,7 @@ import {
 } from 'frappe-ui'
 import { h, computed, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { useLoadingStore } from "@/stores/loading"; 
 
 const props = defineProps({
   name: {
@@ -216,6 +217,7 @@ const { getUser } = usersStore()
 const { $dialog } = globalStore()
 const { getDealStatus } = statusesStore()
 const showQuickEntryModal = ref(false)
+const loadingStore = useLoadingStore();
 
 const route = useRoute()
 const router = useRouter()
@@ -226,6 +228,18 @@ const organization = createDocumentResource({
   cache: ['organization', props.name],
   fields: ['*'],
   auto: true,
+  onSuccess: (data) => {
+    loadingStore.setLoading(false); 
+  },
+  onError: (error) => {
+    loadingStore.setLoading(false); 
+    createToast({
+        title: 'Error',
+        text: error.messages[0],
+        icon: 'x',
+        iconClasses: 'text-red-600',
+      })
+  },
 })
 
 async function updateField(fieldname, value) {

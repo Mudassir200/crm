@@ -5,6 +5,7 @@ import frappe
 from frappe import _
 from frappe.desk.form.assign_to import add as assign
 from frappe.model.document import Document
+from datetime import datetime
 
 from crm.fcrm.doctype.crm_service_level_agreement.utils import get_sla
 from crm.fcrm.doctype.crm_status_change_log.crm_status_change_log import (
@@ -31,6 +32,38 @@ class CRMDeal(Document):
 
 	def before_save(self):
 		self.apply_sla()
+		if self.get_db_value("stage") != self.stage:
+			current_time = datetime.now()
+			previous_stage = self.get_db_value("stage")
+
+			entered_stage_name = self.stage.lower().replace(' ', '_')
+			entered_stage_name = f"date_entered_in_{entered_stage_name}"
+			self.set(entered_stage_name, current_time)
+			
+			if previous_stage:
+				prev_stage_name = previous_stage.lower().replace(' ', '_')
+				exited_field = f"date_exited_in_{prev_stage_name}"
+				entered_time_field = f"date_entered_in_{prev_stage_name}"
+				cumulative_field = f"cumulative_time_in_{prev_stage_name}"
+				latest_field = f"latest_time_in_{prev_stage_name}"
+
+				exited_stage_field = f"date_exited_in_{previous_stage.lower().replace(' ', '_')}"
+				self.set(exited_stage_field, current_time)
+
+				# Calculate cumulative time spent in the previous stage
+				entered_time_str = self.get(entered_time_field)
+				if entered_time_str:
+					entered_time = datetime.strptime(entered_time_str, "%Y-%m-%d %H:%M:%S.%f") if "." in entered_time_str else datetime.strptime(entered_time_str, "%Y-%m-%d %H:%M:%S")
+					time_spent = (current_time - entered_time).total_seconds()
+					
+					cumulative_field = f"cumulative_time_in_{previous_stage.lower().replace(' ', '_')}"
+					latest_field = f"latest_time_in_{previous_stage.lower().replace(' ', '_')}"
+					
+					self.set(cumulative_field, (self.get(cumulative_field) or 0) + time_spent)
+					self.set(latest_field, time_spent)
+
+
+			
 
 	def set_primary_contact(self, contact=None):
 		if not self.contacts:

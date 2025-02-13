@@ -202,6 +202,7 @@ import {
 } from 'frappe-ui'
 import { ref, computed, h } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { useLoadingStore } from "@/stores/loading"; 
 
 const { brand } = getSettings()
 const { $dialog, makeCall } = globalStore()
@@ -209,6 +210,7 @@ const { $dialog, makeCall } = globalStore()
 const { getUser } = usersStore()
 const { getOrganization } = organizationsStore()
 const { getDealStatus } = statusesStore()
+const loadingStore = useLoadingStore();
 
 const props = defineProps({
   name: {
@@ -236,6 +238,12 @@ const contact = createResource({
       mobile_no: data.mobile_no,
     }
   },
+  onSuccess: (data) => {
+    loadingStore.setLoading(false);
+  },
+  onError: (error) => {
+    loadingStore.setLoading(false);
+  }
 })
 
 const breadcrumbs = computed(() => {
