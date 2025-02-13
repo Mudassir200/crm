@@ -1,6 +1,5 @@
 <template>
   <Layout v-if="session().isLoggedIn">
-    <Loader />
     <router-view />
   </Layout>
   <Dialogs />
@@ -16,7 +15,6 @@ import { sessionStore as session } from '@/stores/session'
 import { setTheme } from '@/stores/theme'
 import { setConfig,Toasts } from 'frappe-ui'
 import { computed, defineAsyncComponent, onMounted } from 'vue'
-import Loader from "@/components/Loader.vue";
 
 const MobileLayout = defineAsyncComponent(
   () => import('./components/Layouts/MobileLayout.vue'),
