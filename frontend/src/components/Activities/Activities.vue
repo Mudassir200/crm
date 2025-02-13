@@ -694,8 +694,6 @@ const activities = computed(() => {
 
   let filteredActivity = _activities.filter((activity)=>{
     if (title.value != "Activity") return true
-    console.log(activity);
-    
     if(["changed","removed","added"].includes(activity.activity_type) && !selectedFilter.value.includes("activity")) return false
     else if(activity.activity_type == "attachment_log" && !selectedFilter.value.includes("attachments")) return false
     else if(activity.activity_type == "incoming_call" && !selectedFilter.value.includes("calls")) return false

@@ -440,6 +440,7 @@ function updatePipelinStage(newdata) {
   deal.data['stage'] = newdata.stage
   updateDealData.doc['stage'] = newdata.stage
   updateDealData.isDirty = true
+  isDirtyActive.value = true
 }
 
 function updateDealDetails(action) {
@@ -456,8 +457,7 @@ function updateField(name, value, callback) {
   deal.data[name] = value
   updateDealData.doc[name] = value
   updateDealData.isDirty = true
-  isDirtyActive.value = true // Changed from .set to .value
-  console.log(isDirtyActive.value);
+  isDirtyActive.value = true; 
 }
 
 async function deleteDeal(name) {

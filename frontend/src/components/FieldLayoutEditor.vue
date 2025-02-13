@@ -128,7 +128,7 @@
             >
               <template #item="{ element: column }">
                 <div
-                  class="flex flex-col gap-1.5 min-w-0"
+                  class="flex flex-col grid-cols-1 gap-1.5"
                 >
                   <Draggable
                     :list="column.fields"
