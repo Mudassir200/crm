@@ -120,14 +120,15 @@
               </Dropdown>
             </div>
             <Draggable
-              class="flex gap-2"
+              class="grid gap-2"
+              :class="'grid-cols-'+section.columns.length"
               :list="section.columns"
               group="columns"
               item-key="name"
             >
               <template #item="{ element: column }">
                 <div
-                  class="flex flex-col gap-1.5 flex-1 p-2 border border-dashed border-outline-gray-2 rounded bg-surface-modal cursor-grab"
+                  class="flex flex-col gap-1.5 min-w-0"
                 >
                   <Draggable
                     :list="column.fields"
@@ -138,15 +139,15 @@
                   >
                     <template #item="{ element: field }">
                       <div
-                        class="field px-2.5 py-2 border border-outline-gray-2 rounded text-base bg-surface-modal text-ink-gray-8 flex items-center leading-4 justify-between gap-2"
+                        class="field px-2.5 py-2 border border-outline-gray-2 rounded text-base bg-surface-modal text-ink-gray-8 flex items-center leading-4 justify-between gap-2 min-w-0"
                       >
-                        <div class="flex items-center gap-2 truncate">
-                          <DragVerticalIcon class="h-3.5 cursor-grab" />
+                        <div class="flex items-center gap-2 min-w-0 overflow-hidden">
+                          <DragVerticalIcon class="h-3.5 cursor-grab flex-shrink-0" />
                           <div class="truncate">{{ field.label }}</div>
                         </div>
                         <Button
                           variant="ghost"
-                          class="!size-4 rounded-sm"
+                          class="!size-4 rounded-sm flex-shrink-0"
                           icon="x"
                           @click="
                             column.fields.splice(
