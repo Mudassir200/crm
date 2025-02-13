@@ -143,7 +143,9 @@
                       >
                         <div class="flex items-center gap-2 min-w-0 overflow-hidden">
                           <DragVerticalIcon class="h-3.5 cursor-grab flex-shrink-0" />
-                          <div class="truncate">{{ field.label }}</div>
+                          <Tooltip :text="__(field.label)" :hoverDelay="1">
+                            <div class="truncate">{{ field.label }}</div>
+                          </Tooltip>
                         </div>
                         <Button
                           variant="ghost"
@@ -221,7 +223,7 @@ import Autocomplete from '@/components/frappe-ui/Autocomplete.vue'
 import DragVerticalIcon from '@/components/Icons/DragVerticalIcon.vue'
 import Draggable from 'vuedraggable'
 import { getRandom } from '@/utils'
-import { Dropdown, createResource } from 'frappe-ui'
+import { Dropdown, createResource,Tooltip } from 'frappe-ui'
 import { ref, computed, watch } from 'vue'
 
 const props = defineProps({
