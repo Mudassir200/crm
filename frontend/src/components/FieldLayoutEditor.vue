@@ -121,15 +121,20 @@
             </div>
             <Draggable
               class="grid gap-2"
-              :class="'grid-cols-'+section.columns.length"
+                :class="{
+                'grid-cols-1': section.columns.length === 1,
+                'grid-cols-2': section.columns.length === 2,
+                'grid-cols-3': section.columns.length === 3,
+                'grid-cols-4': section.columns.length === 4
+                }"
               :list="section.columns"
               group="columns"
               item-key="name"
             >
               <template #item="{ element: column }">
                 <div
-                  class="flex flex-col grid-cols-1 gap-1.5"
-                >
+                  class="flex flex-col grid-cols-1 gap-1.5" 
+                > <!-- add class for coumn color "bg-surface-modal p-2" -->
                   <Draggable
                     :list="column.fields"
                     group="fields"
