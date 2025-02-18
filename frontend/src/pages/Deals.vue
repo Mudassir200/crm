@@ -16,8 +16,15 @@
     v-model:updatedPageCount="updatedPageCount" doctype="CRM Deal" :options="{
       allowedViews: ['list', 'group_by', 'kanban'],
     }" />
+  <div
+      v-if="deals?.loading"
+      class="flex flex-1 flex-col items-center justify-center gap-3 text-xl font-medium text-ink-gray-4"
+      >
+        <LoadingIndicator class="h-6 w-6" />
+        <span>{{ __('Loading...') }}</span>
+    </div>
   <KanbanView 
-  v-if="route.params.viewType == 'kanban'" v-model="deals"
+  v-else-if="route.params.viewType == 'kanban'" v-model="deals"
     :user="user" :options="{
       getRoute: (row) => ({
         name: 'Deal',
@@ -174,6 +181,7 @@ import NoteIcon from '@/components/Icons/NoteIcon.vue'
 import TaskIcon from '@/components/Icons/TaskIcon.vue'
 import CommentIcon from '@/components/Icons/CommentIcon.vue'
 import IndicatorIcon from '@/components/Icons/IndicatorIcon.vue'
+import LoadingIndicator from '@/components/Icons/LoadingIndicator.vue'
 import DealsIcon from '@/components/Icons/DealsIcon.vue'
 import LayoutHeader from '@/components/LayoutHeader.vue'
 import DealsListView from '@/components/ListViews/DealsListView.vue'

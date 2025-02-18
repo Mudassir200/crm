@@ -96,8 +96,15 @@
         </div>
       </div>
       <SLASection v-if="deal.data.sla_status" v-model="deal.data" @updateField="updateField" />
-      <div v-if="leftSidePanelSections.data" class="flex flex-1 flex-col justify-between overflow-hidden">
-        <LeftSidePanelLayout v-model="deal.data" :sections="leftSidePanelSections.data" doctype="CRM Deal"
+      <div class="flex flex-1 flex-col justify-between overflow-hidden">
+        <div
+          v-if="leftSidePanelSections?.loading"
+          class="flex flex-1 flex-col items-center justify-center gap-3 text-xl font-medium text-ink-gray-4"
+          >
+            <LoadingIndicator class="h-6 w-6" />
+            <span>{{ __('Loading...') }}</span>
+        </div>
+        <LeftSidePanelLayout v-else v-model="deal.data" :sections="leftSidePanelSections.data" doctype="CRM Deal"
           @update="updateField" @reload="leftSidePanelSections.reload">
         </LeftSidePanelLayout>
       </div>
@@ -107,7 +114,14 @@
         v-model="deal" />
     </Tabs>
     <Resizer side="right" class="flex flex-col justify-between border-l">
-      <div v-if="rightSidePanelSections.data" class="flex flex-1 flex-col justify-between overflow-hidden">
+      <div
+        v-if="rightSidePanelSections?.loading"
+        class="flex flex-1 flex-col items-center justify-center gap-3 text-xl font-medium text-ink-gray-4"
+        >
+          <LoadingIndicator class="h-6 w-6" />
+          <span>{{ __('Loading...') }}</span>
+      </div>
+      <div v-else class="flex flex-1 flex-col justify-between overflow-hidden">
         <RightSidePanelLayout :sections="rightSidePanelSections.data" doctype="CRM Deal"
           @reload="rightSidePanelSections.reload" :objectId="props.name">
         </RightSidePanelLayout>
@@ -154,6 +168,7 @@ import FilesUploader from '@/components/FilesUploader/FilesUploader.vue'
 import SLASection from '@/components/SLASection.vue'
 import CustomActions from '@/components/CustomActions.vue'
 import { usersStore } from '@/stores/users'
+import LoadingIndicator from '@/components/Icons/LoadingIndicator.vue'
 
 import {
   openWebsite,
